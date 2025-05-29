@@ -33,7 +33,7 @@ The development is organized into 5 phases across 11+ sprints, with each sprint 
 
 **Acceptance Criteria**:
 
-- [ ] Project builds and deploys to GitHub Pages
+- [x] Project builds and deploys to GitHub Pages
 - [ ] Users can authenticate via Discord OAuth2
 - [ ] Basic user session management works
 - [ ] Role-based access control framework in place
