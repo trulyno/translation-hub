@@ -1,10 +1,6 @@
 <script>
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
-<<<<<<< HEAD
-	import { page } from '$app/stores';
-=======
->>>>>>> d7e9fb2 (appealing to the prettier)
 	import { setAuth, clearAuth } from '$lib/stores.js';
 	import { exchangeCodeForToken, getDiscordUser } from '$lib/auth.js';
 
