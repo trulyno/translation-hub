@@ -41,7 +41,7 @@ jobs:
       - name: Create production environment file
         run: |
           echo "VITE_DISCORD_CLIENT_ID=${{ secrets.DISCORD_CLIENT_ID }}" > .env
-          echo "VITE_DISCORD_CLIENT_ID=${{ secrets.DISCORD_CLIENT_SECRET }}" > .env
+          echo "VITE_DISCORD_CLIENT_SECRET=${{ secrets.DISCORD_CLIENT_SECRET }}" > .env
           echo "VITE_REDIRECT_URI=https://${{ github.repository_owner }}.github.io/translation-hub/auth/callback" >> .env
           echo "VITE_APP_URL=https://${{ github.repository_owner }}.github.io/translation-hub" >> .env
 
