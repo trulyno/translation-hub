@@ -12,17 +12,20 @@ A web-based translation management system designed specifically for Minecraft mo
 ## 🚀 Quick Start
 
 1. **Clone the repository**
+
    ```bash
    git clone https://github.com/your-org/translation-hub.git
    cd translation-hub
    ```
 
 2. **Install dependencies**
+
    ```bash
    npm install
    ```
 
 3. **Start development server**
+
    ```bash
    npm run dev
    ```
@@ -54,6 +57,7 @@ A web-based translation management system designed specifically for Minecraft mo
 This project is currently in active development. See the [Development Plan](docs/development-plan.md) for detailed progress tracking and upcoming milestones.
 
 ### Current Phase: Foundation (Phase 1)
+
 - ✅ Project setup and configuration
 - 🔄 Discord OAuth2 integration
 - 🔄 Core data structures

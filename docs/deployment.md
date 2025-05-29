@@ -11,6 +11,7 @@ The Star Technology Translations Hub is designed as a static web application opt
 ### Repository Configuration
 
 1. **Repository Structure**
+
    ```
    translation-hub/
    ├── .github/
@@ -33,40 +34,42 @@ The Star Technology Translations Hub is designed as a static web application opt
 ### Static Site Configuration
 
 #### Vite Configuration (`vite.config.js`)
+
 ```javascript
 import { defineConfig } from 'vite';
 import { sveltekit } from '@sveltejs/kit/vite';
 
 export default defineConfig({
-  plugins: [sveltekit()],
-  build: {
-    target: 'es2020'
-  },
-  define: {
-    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
-  }
+	plugins: [sveltekit()],
+	build: {
+		target: 'es2020'
+	},
+	define: {
+		'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+	}
 });
 ```
 
 #### SvelteKit Configuration (`svelte.config.js`)
+
 ```javascript
 import adapter from '@sveltejs/adapter-static';
 import { vitePreprocess } from '@sveltejs/kit/vite';
 
 const config = {
-  preprocess: vitePreprocess(),
-  kit: {
-    adapter: adapter({
-      pages: 'build',
-      assets: 'build',
-      fallback: 'index.html',
-      precompress: false,
-      strict: true
-    }),
-    paths: {
-      base: process.env.NODE_ENV === 'production' ? '/translation-hub' : ''
-    }
-  }
+	preprocess: vitePreprocess(),
+	kit: {
+		adapter: adapter({
+			pages: 'build',
+			assets: 'build',
+			fallback: 'index.html',
+			precompress: false,
+			strict: true
+		}),
+		paths: {
+			base: process.env.NODE_ENV === 'production' ? '/translation-hub' : ''
+		}
+	}
 };
 
 export default config;
@@ -154,11 +157,13 @@ Create the following secrets in your GitHub repository settings:
 ### Discord Application Setup
 
 1. **Create Discord Application**
+
    - Go to [Discord Developer Portal](https://discord.com/developers/applications)
    - Click "New Application"
    - Name your application "Star Technology Translations Hub"
 
 2. **Configure OAuth2**
+
    - Navigate to OAuth2 → General
    - Add redirect URIs:
      - Development: `http://localhost:5173/auth/callback`
@@ -173,14 +178,15 @@ Create the following secrets in your GitHub repository settings:
 ### Authentication Configuration
 
 Create `src/lib/config/auth.js`:
+
 ```javascript
 export const authConfig = {
-  discord: {
-    clientId: import.meta.env.VITE_DISCORD_CLIENT_ID,
-    redirectUri: import.meta.env.VITE_DISCORD_REDIRECT_URI,
-    scopes: ['identify', 'guilds.members.read']
-  },
-  serverId: 'YOUR_DISCORD_SERVER_ID'
+	discord: {
+		clientId: import.meta.env.VITE_DISCORD_CLIENT_ID,
+		redirectUri: import.meta.env.VITE_DISCORD_REDIRECT_URI,
+		scopes: ['identify', 'guilds.members.read']
+	},
+	serverId: 'YOUR_DISCORD_SERVER_ID'
 };
 ```
 
@@ -203,37 +209,39 @@ static/data/
 ### Example Data Files
 
 #### `static/data/config/app-config.json`
+
 ```json
 {
-  "version": "1.0.0",
-  "supportedLanguages": [
-    { "code": "en", "name": "English", "native": "English" },
-    { "code": "es", "name": "Spanish", "native": "Español" },
-    { "code": "fr", "name": "French", "native": "Français" }
-  ],
-  "defaultLanguage": "en",
-  "maxTranslationLength": 1000,
-  "autoSaveInterval": 30000
+	"version": "1.0.0",
+	"supportedLanguages": [
+		{ "code": "en", "name": "English", "native": "English" },
+		{ "code": "es", "name": "Spanish", "native": "Español" },
+		{ "code": "fr", "name": "French", "native": "Français" }
+	],
+	"defaultLanguage": "en",
+	"maxTranslationLength": 1000,
+	"autoSaveInterval": 30000
 }
 ```
 
 #### `static/data/translations/categories.json`
+
 ```json
 {
-  "categories": [
-    {
-      "id": "items",
-      "name": "Items",
-      "description": "Item names and descriptions",
-      "parent": null
-    },
-    {
-      "id": "blocks",
-      "name": "Blocks",
-      "description": "Block names and descriptions",
-      "parent": null
-    }
-  ]
+	"categories": [
+		{
+			"id": "items",
+			"name": "Items",
+			"description": "Item names and descriptions",
+			"parent": null
+		},
+		{
+			"id": "blocks",
+			"name": "Blocks",
+			"description": "Block names and descriptions",
+			"parent": null
+		}
+	]
 }
 ```
 
@@ -242,6 +250,7 @@ static/data/
 ### Development Environment
 
 Create `.env.local`:
+
 ```env
 VITE_DISCORD_CLIENT_ID=your_discord_client_id
 VITE_DISCORD_REDIRECT_URI=http://localhost:5173/auth/callback
@@ -252,6 +261,7 @@ VITE_ENVIRONMENT=development
 ### Production Environment
 
 Environment variables are configured in GitHub repository secrets and injected during build:
+
 ```env
 VITE_DISCORD_CLIENT_ID=${{ secrets.DISCORD_CLIENT_ID }}
 VITE_DISCORD_REDIRECT_URI=https://your-domain.github.io/translation-hub/auth/callback
@@ -264,26 +274,29 @@ VITE_ENVIRONMENT=production
 ### Static Asset Optimization
 
 1. **Image Optimization**
+
    - Use WebP format for images
    - Implement responsive images with srcset
    - Compress all static assets
 
 2. **Code Splitting**
+
    - Implement route-based code splitting
    - Lazy load heavy components
    - Use dynamic imports for optional features
 
 3. **Caching Strategy**
+
 ### Service Worker Configuration
 
 ```javascript
 // Service worker configuration
 const CACHE_NAME = 'translation-hub-v1';
 const STATIC_ASSETS = [
-  '/',
-  '/static/css/app.css',
-  '/static/js/app.js',
-  '/static/data/config/app-config.json'
+	'/',
+	'/static/css/app.css',
+	'/static/js/app.js',
+	'/static/data/config/app-config.json'
 ];
 ```
 
@@ -292,13 +305,14 @@ const STATIC_ASSETS = [
 GitHub Pages automatically provides CDN distribution, but you can optimize further:
 
 1. **Cache Headers** (via `static/_headers` file)
+
    ```
    /static/*
      Cache-Control: public, max-age=31536000
-   
+
    /*.json
      Cache-Control: public, max-age=3600
-   
+
    /index.html
      Cache-Control: public, max-age=0, must-revalidate
    ```
@@ -308,6 +322,7 @@ GitHub Pages automatically provides CDN distribution, but you can optimize furth
 ### Content Security Policy
 
 Add CSP headers via `static/_headers`:
+
 ```
 /*
   Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; connect-src 'self' https://discord.com https://discordapp.com
@@ -327,13 +342,14 @@ Add CSP headers via `static/_headers`:
 ### Error Monitoring
 
 Integrate error tracking service:
+
 ```javascript
 // src/lib/monitoring/errors.js
 export function initErrorMonitoring() {
-  window.addEventListener('error', (event) => {
-    // Send error to monitoring service
-    console.error('Application error:', event.error);
-  });
+	window.addEventListener('error', (event) => {
+		// Send error to monitoring service
+		console.error('Application error:', event.error);
+	});
 }
 ```
 
@@ -342,26 +358,27 @@ export function initErrorMonitoring() {
 ```javascript
 // src/lib/monitoring/performance.js
 export function trackPageLoad() {
-  window.addEventListener('load', () => {
-    const loadTime = performance.now();
-    // Track page load time
-    console.log('Page loaded in:', loadTime, 'ms');
-  });
+	window.addEventListener('load', () => {
+		const loadTime = performance.now();
+		// Track page load time
+		console.log('Page loaded in:', loadTime, 'ms');
+	});
 }
 ```
 
 ### Usage Analytics
 
 Configure privacy-focused analytics:
+
 ```javascript
 // src/lib/analytics/tracking.js
 export function trackPageView(page) {
-  // Implement privacy-focused analytics
-  if (typeof gtag !== 'undefined') {
-    gtag('config', 'GA_TRACKING_ID', {
-      page_path: page
-    });
-  }
+	// Implement privacy-focused analytics
+	if (typeof gtag !== 'undefined') {
+		gtag('config', 'GA_TRACKING_ID', {
+			page_path: page
+		});
+	}
 }
 ```
 
@@ -370,6 +387,7 @@ export function trackPageView(page) {
 ### Data Backup Strategy
 
 1. **Git-based Backup**
+
    - All translation data is versioned in Git
    - Multiple backup repositories can be maintained
    - Automated daily backups via GitHub Actions
@@ -382,6 +400,7 @@ export function trackPageView(page) {
 ### Recovery Procedures
 
 1. **Data Recovery**
+
    - Restore from Git history
    - Import from backup exports
    - Manual data reconstruction if needed
@@ -396,11 +415,13 @@ export function trackPageView(page) {
 ### Regular Maintenance Tasks
 
 1. **Weekly**
+
    - Monitor application performance
    - Check error logs and fix issues
    - Update dependencies if needed
 
 2. **Monthly**
+
    - Review and update documentation
    - Analyze usage metrics
    - Plan feature updates
@@ -413,6 +434,7 @@ export function trackPageView(page) {
 ### Update Procedures
 
 1. **Dependency Updates**
+
    ```bash
    npm audit
    npm update
@@ -421,6 +443,7 @@ export function trackPageView(page) {
    ```
 
 2. **Security Updates**
+
    - Monitor GitHub security advisories
    - Apply critical updates immediately
    - Test thoroughly before deployment
@@ -435,11 +458,13 @@ export function trackPageView(page) {
 ### Common Issues
 
 1. **Build Failures**
+
    - Check Node.js version compatibility
    - Verify all dependencies are installed
    - Review build logs for specific errors
 
 2. **Authentication Issues**
+
    - Verify Discord OAuth2 configuration
    - Check redirect URI configuration
    - Ensure environment variables are set correctly
@@ -452,6 +477,7 @@ export function trackPageView(page) {
 ### Support Procedures
 
 1. **User Support**
+
    - Create issue templates for bug reports
    - Maintain FAQ documentation
    - Provide user guides and tutorials
