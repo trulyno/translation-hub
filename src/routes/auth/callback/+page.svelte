@@ -1,6 +1,7 @@
 <script>
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
+	import { base } from '$app/paths';
 	import { setAuth, clearAuth } from '$lib/stores.js';
 	import { exchangeCodeForToken, getDiscordUser } from '$lib/auth.js';
 
@@ -51,7 +52,7 @@
 
 			// Redirect to home page
 			setTimeout(() => {
-				goto('/');
+				goto(base || '/');
 			}, 1000);
 		} catch (err) {
 			console.error('Authentication error:', err);
@@ -72,7 +73,7 @@
 			<div class="error-state">
 				<h2>❌ Authentication Failed</h2>
 				<p>{error}</p>
-				<a href="/" class="btn btn-primary">Return Home</a>
+				<a href="{base || '/'}" class="btn btn-primary">Return Home</a>
 			</div>
 		{:else}
 			<div class="loading-state">
