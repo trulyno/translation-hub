@@ -17,10 +17,12 @@ The application uses GitHub Actions for automated deployment to GitHub Pages wit
 ### Enable GitHub Pages
 
 1. **Navigate to Repository Settings**
+
    - Go to your GitHub repository
    - Click on "Settings" tab
 
 2. **Configure Pages**
+
    - In the left sidebar, click "Pages"
    - Under "Source", select "GitHub Actions"
    - This enables custom GitHub Actions for deployment
@@ -34,6 +36,7 @@ The application uses GitHub Actions for automated deployment to GitHub Pages wit
 ### Add Discord Client ID
 
 1. **Access Secrets Settings**
+
    - Go to repository Settings
    - Navigate to "Secrets and variables" → "Actions"
 
@@ -52,6 +55,7 @@ The Discord Client ID is the only credential needed for client-side OAuth2. The 
 ### Add Production Redirect URI
 
 1. **Open Discord Developer Portal**
+
    - Go to [https://discord.com/developers/applications](https://discord.com/developers/applications)
    - Select your application
 
@@ -64,6 +68,7 @@ The Discord Client ID is the only credential needed for client-side OAuth2. The 
 ### Example Redirect URIs
 
 For a user named `johndoe` with repository `translation-hub`:
+
 ```
 https://johndoe.github.io/translation-hub/auth/callback
 ```
@@ -75,6 +80,7 @@ https://johndoe.github.io/translation-hub/auth/callback
 The repository includes a GitHub Actions workflow (`.github/workflows/deploy.yml`) that automatically:
 
 1. **Builds the Application**
+
    - Installs dependencies
    - Injects environment variables from secrets
    - Builds static site optimized for production
@@ -89,6 +95,7 @@ The repository includes a GitHub Actions workflow (`.github/workflows/deploy.yml
 To trigger deployment manually:
 
 1. **Push to Main Branch**
+
    ```bash
    git push origin main
    ```
@@ -103,6 +110,7 @@ To trigger deployment manually:
 ### Check Deployment Status
 
 1. **Actions Tab**
+
    - Go to your repository's "Actions" tab
    - Verify the latest workflow run completed successfully
    - Green checkmark indicates successful deployment
@@ -114,6 +122,7 @@ To trigger deployment manually:
 ### Test Authentication Flow
 
 1. **Visit Your Site**
+
    - Open `https://yourusername.github.io/translation-hub/`
    - Replace `yourusername` with your GitHub username
 
@@ -136,6 +145,7 @@ VITE_APP_URL=https://yourusername.github.io/translation-hub
 ```
 
 These are injected from:
+
 - **GitHub Secrets**: `DISCORD_CLIENT_ID`
 - **Repository Context**: Username and repository name
 - **GitHub Pages URL**: Automatically constructed
@@ -145,6 +155,7 @@ These are injected from:
 ### Common Deployment Issues
 
 1. **Build Failures**
+
    ```bash
    # Check Actions logs for specific error
    # Common issues:
@@ -154,6 +165,7 @@ These are injected from:
    ```
 
 2. **OAuth Errors in Production**
+
    - Verify Discord redirect URI matches exactly
    - Check GitHub Secret is set correctly
    - Ensure GitHub Pages is enabled
@@ -166,11 +178,13 @@ These are injected from:
 ### Debug Steps
 
 1. **Check GitHub Actions Logs**
+
    - Go to Actions tab
    - Click on failed workflow
    - Expand log sections to see detailed errors
 
 2. **Verify Secrets**
+
    - Go to Settings → Secrets and variables → Actions
    - Ensure `DISCORD_CLIENT_ID` secret exists
    - Secret values are hidden but names are visible
@@ -186,10 +200,12 @@ These are injected from:
 ### Updating the Application
 
 1. **Make Changes**
+
    - Edit code in your local environment
    - Test changes locally
 
 2. **Deploy Updates**
+
    ```bash
    git add .
    git commit -m "Update: description of changes"
@@ -205,6 +221,7 @@ These are injected from:
 If you need to update the Discord Client ID:
 
 1. **Update GitHub Secret**
+
    - Go to Settings → Secrets and variables → Actions
    - Click on `DISCORD_CLIENT_ID`
    - Update value and save

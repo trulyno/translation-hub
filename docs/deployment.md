@@ -11,16 +11,19 @@ This document provides comprehensive instructions for deploying and configuring 
 ## Quick Start Deployment
 
 For complete step-by-step instructions, see:
+
 - **[Discord OAuth2 Setup Guide](discord-setup.md)** - Configure Discord application
 - **[GitHub Pages Setup Guide](github-pages-setup.md)** - Deploy to GitHub Pages
 
 ### Quick Setup Summary
 
 1. **Set up Discord Application** ([detailed guide](discord-setup.md))
+
    - Create Discord app and note Client ID
    - Add redirect URIs for development and production
 
 2. **Configure GitHub Repository** ([detailed guide](github-pages-setup.md))
+
    - Add `DISCORD_CLIENT_ID` secret in repository settings
    - Enable GitHub Pages with GitHub Actions source
 
@@ -185,12 +188,14 @@ This project uses client-side Discord OAuth2 authentication optimized for GitHub
 ### Discord Application Setup
 
 1. **Create Discord Application**
+
    - Go to the [Discord Developer Portal](https://discord.com/developers/applications)
    - Click "New Application"
    - Give your application a name (e.g., "Translation Hub")
    - Accept the terms and create the application
 
 2. **Configure OAuth2**
+
    - In your application, go to the "OAuth2" section in the sidebar
    - Under "OAuth2 URL Generator":
      - **Scopes**: Select `identify` and optionally `email`
@@ -206,6 +211,7 @@ This project uses client-side Discord OAuth2 authentication optimized for GitHub
 ### GitHub Pages Deployment Setup
 
 4. **Configure GitHub Secrets**
+
    - Go to your GitHub repository
    - Navigate to **Settings** > **Secrets and variables** > **Actions**
    - Click **New repository secret**
@@ -223,6 +229,7 @@ This project uses client-side Discord OAuth2 authentication optimized for GitHub
 ### Local Development Setup
 
 6. **Configure Local Environment**
+
    - Copy `.env.example` to `.env`:
      ```bash
      cp .env.example .env
@@ -244,6 +251,7 @@ This project uses client-side Discord OAuth2 authentication optimized for GitHub
 ### How It Works
 
 **Client-Side Authentication Flow**:
+
 1. **Login**: User clicks "Sign in with Discord"
 2. **Redirect**: Browser redirects to Discord OAuth2 authorization
 3. **Callback**: Discord redirects back with authorization code
@@ -260,12 +268,14 @@ This project uses client-side Discord OAuth2 authentication optimized for GitHub
 ### Troubleshooting
 
 **"Invalid Redirect URI" Error**:
-- Check that your redirect URI in Discord matches exactly: 
+
+- Check that your redirect URI in Discord matches exactly:
   - Local: `http://localhost:5173/auth/callback`
   - Production: `https://yourusername.github.io/translation-hub/auth/callback`
 - Make sure there are no trailing slashes or extra characters
 
 **Build/Deployment Issues**:
+
 - Verify your `DISCORD_CLIENT_ID` secret is set in GitHub repository settings
 - Check the Actions tab for build logs and errors
 - Ensure your repository has GitHub Pages enabled
