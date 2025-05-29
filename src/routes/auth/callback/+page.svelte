@@ -73,7 +73,7 @@
 			<div class="error-state">
 				<h2>❌ Authentication Failed</h2>
 				<p>{error}</p>
-				<a href="{base || '/'}" class="btn btn-primary">Return Home</a>
+				<a href={base || '/'} class="btn btn-primary">Return Home</a>
 			</div>
 		{:else}
 			<div class="loading-state">
