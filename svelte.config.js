@@ -1,4 +1,4 @@
-import adapter from '@sveltejs/adapter-auto';
+import adapter from '@sveltejs/adapter-static';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 
 const config = {
@@ -7,12 +7,16 @@ const config = {
 		adapter: adapter({
 			pages: 'build',
 			assets: 'build',
-			fallback: 'index.html',
+			fallback: 'index.html', // For SPA routing with client-side auth
 			precompress: false,
-			strict: true
+			strict: false
 		}),
 		paths: {
 			base: process.env.NODE_ENV === 'production' ? '/translation-hub' : ''
+		},
+		prerender: {
+			entries: ['*'],
+			handleMissingId: 'warn'
 		}
 	}
 };

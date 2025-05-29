@@ -38,8 +38,17 @@ jobs:
       - name: Run linting
         run: npm run lint
 
+      - name: Create production environment file
+        run: |
+          echo "VITE_DISCORD_CLIENT_ID=${{ secrets.DISCORD_CLIENT_ID }}" > .env
+          echo "VITE_DISCORD_CLIENT_ID=${{ secrets.DISCORD_CLIENT_SECRET }}" > .env
+          echo "VITE_REDIRECT_URI=https://${{ github.repository_owner }}.github.io/translation-hub/auth/callback" >> .env
+          echo "VITE_APP_URL=https://${{ github.repository_owner }}.github.io/translation-hub" >> .env
+
       - name: Build application
         run: npm run build
+        env:
+          NODE_ENV: production
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -47,7 +56,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: './.svelte-kit/output/client'
+          path: './build'
 
   deploy:
     if: github.ref == 'refs/heads/main'

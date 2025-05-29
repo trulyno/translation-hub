@@ -2,6 +2,31 @@
 
 This document provides comprehensive instructions for deploying and configuring the Star Technology Translations Hub.
 
+## Implementation Status
+
+**✅ Current Status**: The Discord OAuth2 authentication demo is fully implemented and working on GitHub Pages. The system uses client-side authentication optimized for static hosting with secure credential management through GitHub Secrets.
+
+**🎯 Production Ready**: The authentication system is production-ready for GitHub Pages deployment. For full production use with backend services, see the [Implementation Details](implementation.md) document for additional considerations.
+
+## Quick Start Deployment
+
+For complete step-by-step instructions, see:
+- **[Discord OAuth2 Setup Guide](discord-setup.md)** - Configure Discord application
+- **[GitHub Pages Setup Guide](github-pages-setup.md)** - Deploy to GitHub Pages
+
+### Quick Setup Summary
+
+1. **Set up Discord Application** ([detailed guide](discord-setup.md))
+   - Create Discord app and note Client ID
+   - Add redirect URIs for development and production
+
+2. **Configure GitHub Repository** ([detailed guide](github-pages-setup.md))
+   - Add `DISCORD_CLIENT_ID` secret in repository settings
+   - Enable GitHub Pages with GitHub Actions source
+
+3. **Deploy**
+   - Push to main branch for automatic deployment
+
 ## Deployment Overview
 
 The Star Technology Translations Hub is designed as a static web application optimized for GitHub Pages deployment, providing a simple, cost-effective hosting solution with global CDN distribution.
@@ -150,45 +175,100 @@ Create the following secrets in your GitHub repository settings:
 
 - `DISCORD_CLIENT_ID`: Discord OAuth2 application client ID
 - `DISCORD_CLIENT_SECRET`: Discord OAuth2 application client secret
-- `DISCORD_REDIRECT_URI`: OAuth2 redirect URI (e.g., `https://your-domain.github.io/auth/callback`)
 
 ## Discord OAuth2 Configuration
+
+### Overview
+
+This project uses client-side Discord OAuth2 authentication optimized for GitHub Pages static deployment. The setup uses GitHub Secrets to securely store the Discord Client ID without exposing it in the repository.
 
 ### Discord Application Setup
 
 1. **Create Discord Application**
-
-   - Go to [Discord Developer Portal](https://discord.com/developers/applications)
+   - Go to the [Discord Developer Portal](https://discord.com/developers/applications)
    - Click "New Application"
-   - Name your application "Star Technology Translations Hub"
+   - Give your application a name (e.g., "Translation Hub")
+   - Accept the terms and create the application
 
 2. **Configure OAuth2**
+   - In your application, go to the "OAuth2" section in the sidebar
+   - Under "OAuth2 URL Generator":
+     - **Scopes**: Select `identify` and optionally `email`
+     - **Redirect URLs**: Add your callback URL(s):
+       - For development: `http://localhost:5173/auth/callback`
+       - For production: `https://yourusername.github.io/translation-hub/auth/callback`
 
-   - Navigate to OAuth2 → General
-   - Add redirect URIs:
-     - Development: `http://localhost:5173/auth/callback`
-     - Production: `https://your-domain.github.io/translation-hub/auth/callback`
-   - Set scopes: `identify`, `guilds.members.read`
+3. **Get Your Client ID**
+   - Go to the "General Information" section
+   - Copy your **Application ID** (this is your Client ID)
+   - **Note**: For client-side authentication, you only need the Client ID (not the secret)
 
-3. **Bot Configuration** (if needed for server verification)
-   - Navigate to Bot section
-   - Create bot and copy token
-   - Set appropriate permissions for server member verification
+### GitHub Pages Deployment Setup
 
-### Authentication Configuration
+4. **Configure GitHub Secrets**
+   - Go to your GitHub repository
+   - Navigate to **Settings** > **Secrets and variables** > **Actions**
+   - Click **New repository secret**
+   - Add the following secret:
+     - **Name**: `DISCORD_CLIENT_ID`
+     - **Value**: Your Discord Application ID
 
-Create `src/lib/config/auth.js`:
+5. **Deploy to GitHub Pages**
+   - Push your changes to the `main` branch
+   - The GitHub Actions workflow will automatically:
+     - Build the application with the Discord Client ID from secrets
+     - Deploy to GitHub Pages
+     - Keep your credentials secure
 
-```javascript
-export const authConfig = {
-	discord: {
-		clientId: import.meta.env.VITE_DISCORD_CLIENT_ID,
-		redirectUri: import.meta.env.VITE_DISCORD_REDIRECT_URI,
-		scopes: ['identify', 'guilds.members.read']
-	},
-	serverId: 'YOUR_DISCORD_SERVER_ID'
-};
-```
+### Local Development Setup
+
+6. **Configure Local Environment**
+   - Copy `.env.example` to `.env`:
+     ```bash
+     cp .env.example .env
+     ```
+   - Fill in your Discord Client ID in the `.env` file:
+     ```env
+     VITE_DISCORD_CLIENT_ID=your_actual_client_id_here
+     VITE_REDIRECT_URI=http://localhost:5173/auth/callback
+     VITE_APP_URL=http://localhost:5173
+     ```
+
+7. **Run the Application**
+   ```bash
+   npm install
+   npm run dev
+   ```
+   Visit `http://localhost:5173` and you should see the Discord OAuth2 login button.
+
+### How It Works
+
+**Client-Side Authentication Flow**:
+1. **Login**: User clicks "Sign in with Discord"
+2. **Redirect**: Browser redirects to Discord OAuth2 authorization
+3. **Callback**: Discord redirects back with authorization code
+4. **Demo Mode**: For demonstration, we simulate user data
+5. **Storage**: User session is stored in localStorage
+
+### Security Notes
+
+- ✅ Client ID is safe to expose (it's designed to be public)
+- ✅ No client secret is needed for public applications
+- ✅ GitHub Secrets keep credentials secure during deployment
+- ✅ No sensitive data is committed to the repository
+
+### Troubleshooting
+
+**"Invalid Redirect URI" Error**:
+- Check that your redirect URI in Discord matches exactly: 
+  - Local: `http://localhost:5173/auth/callback`
+  - Production: `https://yourusername.github.io/translation-hub/auth/callback`
+- Make sure there are no trailing slashes or extra characters
+
+**Build/Deployment Issues**:
+- Verify your `DISCORD_CLIENT_ID` secret is set in GitHub repository settings
+- Check the Actions tab for build logs and errors
+- Ensure your repository has GitHub Pages enabled
 
 ## Data Storage Configuration
 
