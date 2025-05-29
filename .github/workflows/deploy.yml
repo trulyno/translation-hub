@@ -44,7 +44,7 @@ jobs:
           echo "VITE_DISCORD_CLIENT_SECRET=${{ secrets.DISCORD_CLIENT_SECRET }}" >> .env
           echo "VITE_REDIRECT_URI=https://${{ github.repository_owner }}.github.io/translation-hub/auth/callback" >> .env
           echo "VITE_APP_URL=https://${{ github.repository_owner }}.github.io/translation-hub" >> .env
-          echo .env
+          cat .env
 
       - name: Build application
         run: npm run build
