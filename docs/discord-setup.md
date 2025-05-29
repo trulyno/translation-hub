@@ -11,10 +11,12 @@ This guide walks you through setting up Discord OAuth2 authentication for the St
 ## Step 1: Create Discord Application
 
 1. **Visit the Discord Developer Portal**
+
    - Go to [https://discord.com/developers/applications](https://discord.com/developers/applications)
    - Sign in with your Discord account
 
 2. **Create New Application**
+
    - Click "New Application" button
    - Enter application name: `Star Technology Translations Hub` (or your preferred name)
    - Accept Discord's terms and create the application
@@ -26,21 +28,24 @@ This guide walks you through setting up Discord OAuth2 authentication for the St
 ## Step 2: Configure OAuth2 Settings
 
 1. **Navigate to OAuth2 Tab**
+
    - In your Discord application, click on "OAuth2" in the left sidebar
    - Select "General" under OAuth2
 
 2. **Add Redirect URIs**
-   
+
    **For Development:**
+
    ```
    http://localhost:5173/auth/callback
    ```
-   
+
    **For Production (GitHub Pages):**
+
    ```
    https://yourusername.github.io/translation-hub/auth/callback
    ```
-   
+
    Replace `yourusername` with your actual GitHub username.
 
 3. **Save Changes**
@@ -49,6 +54,7 @@ This guide walks you through setting up Discord OAuth2 authentication for the St
 ## Step 3: Configure OAuth2 Scopes (Optional)
 
 For this application, we use the implicit grant flow which only requires:
+
 - `identify` - Basic user information
 - `email` - User's email address (if needed)
 
@@ -57,10 +63,12 @@ These scopes are configured in the client-side code, not in the Discord Develope
 ## Step 4: Security Considerations
 
 ### What's Safe to Expose
+
 - **Application ID (Client ID)**: Safe to use in client-side code
 - **Redirect URIs**: Public information, configured in Discord app settings
 
 ### What to Keep Secret
+
 - **Client Secret**: Not needed for public OAuth apps using implicit grant flow
 - **Bot Token**: Not applicable for OAuth2 user authentication
 
@@ -69,6 +77,7 @@ These scopes are configured in the client-side code, not in the Discord Develope
 ### Development Setup
 
 1. **Create Environment File**
+
    ```bash
    cp .env.example .env
    ```
@@ -85,6 +94,7 @@ These scopes are configured in the client-side code, not in the Discord Develope
 For GitHub Pages deployment, credentials are managed through GitHub Secrets:
 
 1. **Go to Repository Settings**
+
    - Navigate to your GitHub repository
    - Go to Settings → Secrets and variables → Actions
 
@@ -99,6 +109,7 @@ For GitHub Pages deployment, credentials are managed through GitHub Secrets:
 ### Development Testing
 
 1. **Start Development Server**
+
    ```bash
    npm run dev
    ```
@@ -112,6 +123,7 @@ For GitHub Pages deployment, credentials are managed through GitHub Secrets:
 ### Production Testing
 
 1. **Deploy to GitHub Pages**
+
    - Push changes to main branch
    - Wait for GitHub Actions to complete deployment
 
@@ -125,10 +137,12 @@ For GitHub Pages deployment, credentials are managed through GitHub Secrets:
 ### Common Issues
 
 1. **Invalid Redirect URI Error**
+
    - Verify redirect URI in Discord app settings matches exactly
    - Check for trailing slashes or protocol differences (http vs https)
 
 2. **Application Not Found**
+
    - Verify Discord Client ID is correct
    - Check environment variable is properly set
 
@@ -145,6 +159,7 @@ For GitHub Pages deployment, credentials are managed through GitHub Secrets:
 ## Next Steps
 
 After completing Discord setup:
+
 1. Follow the [GitHub Pages Setup Guide](github-pages-setup.md) for deployment
 2. Review [Implementation Details](implementation.md) for technical information
 3. Check [Deployment Guide](deployment.md) for production considerations

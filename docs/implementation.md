@@ -9,17 +9,20 @@ The Discord OAuth2 authentication demo has been successfully implemented and is 
 ### What Was Built
 
 #### Client-Side Authentication System
+
 - **Pure client-side implementation** optimized for static hosting (GitHub Pages)
 - **Discord OAuth2 flow** using authorization code grant
 - **Local storage** for session persistence
 - **Reactive UI** that updates based on authentication state
 
 #### Secure Deployment Strategy
+
 - **GitHub Secrets** to store Discord Client ID securely
 - **Build-time environment injection** without exposing secrets in the repository
 - **Proper redirect URI configuration** for both development and production
 
 #### User Interface
+
 - **Beautiful, responsive design** with Discord branding
 - **User profile display** showing avatar, username, email, and ID
 - **Smooth animations** and modern UI components
@@ -48,7 +51,8 @@ The application implements a client-side Discord OAuth2 flow specifically design
 - **`src/app.d.ts`** - TypeScript definitions (cleaned up)
 
 #### Deployment Configuration
-- **`.github/workflows/deploy.yml`** - Updated to use VITE_ environment variables
+
+- **`.github/workflows/deploy.yml`** - Updated to use VITE\_ environment variables
 - **`svelte.config.js`** - Optimized for static deployment
 - **`.env` and `.env.example`** - Client-side environment configuration
 
@@ -124,13 +128,13 @@ The application is configured for static site generation:
 import adapter from '@sveltejs/adapter-static';
 
 const config = {
-  kit: {
-    adapter: adapter({
-      pages: 'build',
-      assets: 'build',
-      fallback: 'index.html'
-    })
-  }
+	kit: {
+		adapter: adapter({
+			pages: 'build',
+			assets: 'build',
+			fallback: 'index.html'
+		})
+	}
 };
 ```
 
@@ -146,13 +150,16 @@ const config = {
 ### Security Considerations
 
 #### ✅ What's Secure
+
 - Discord Client ID is designed to be public and safe to expose
 - GitHub Secrets provide encrypted storage for build-time variables
 - No sensitive authentication tokens are stored in the repository
 - Build process keeps credentials secure during deployment
 
 #### 🔄 Production Enhancements
+
 For a full production deployment, consider adding:
+
 - **Backend Token Exchange**: Server or serverless function for secure token handling
 - **Server-Side Session Management**: More secure than localStorage
 - **Token Refresh Logic**: Automatic handling of expired tokens

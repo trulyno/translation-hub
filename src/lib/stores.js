@@ -14,7 +14,7 @@ const TOKEN_STORAGE_KEY = 'discord_token';
 if (browser) {
 	const storedUser = localStorage.getItem(USER_STORAGE_KEY);
 	const storedToken = localStorage.getItem(TOKEN_STORAGE_KEY);
-	
+
 	if (storedUser && storedToken) {
 		try {
 			const userData = JSON.parse(storedUser);
@@ -53,8 +53,8 @@ export function getStoredToken() {
 }
 
 export function getAvatarUrl(user) {
-    if (user.avatar) {
-         return `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`;
-    }
-    return `https://cdn.discordapp.com/embed/avatars/${user.discriminator % 5}.png`;
+	if (user.avatar) {
+		return `https://cdn.discordapp.com/avatars/${user.id}/${user.avatar}.png`;
+	}
+	return `https://cdn.discordapp.com/embed/avatars/${user.discriminator % 5}.png`;
 }

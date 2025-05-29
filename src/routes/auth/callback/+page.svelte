@@ -27,12 +27,12 @@
 
 		try {
 			status = 'Exchanging code for token...';
-            const tokenData = await exchangeCodeForToken(code);
-			
+			const tokenData = await exchangeCodeForToken(code);
+
 			// For demo purposes with static deployment, we'll simulate this
 			// In production, this would be handled by a backend service
 			console.log('Authorization code received:', code);
-			
+
 			// Simulate user data for demo (in production, use the token exchange)
 			// const userData = {
 			// 	id: 'demo_user_' + Date.now(),
@@ -41,20 +41,19 @@
 			// 	avatar: 'https://cdn.discordapp.com/embed/avatars/0.png',
 			// 	email: 'demo@example.com'
 			// };
-            const userData = await getDiscordUser(tokenData.access_token);
-			
+			const userData = await getDiscordUser(tokenData.access_token);
+
 			status = 'Getting user information...';
-			
+
 			// Set auth state
 			setAuth(userData, tokenData.access_token);
-			
+
 			status = 'Success! Redirecting...';
-			
+
 			// Redirect to home page
 			setTimeout(() => {
 				goto('/');
 			}, 1000);
-			
 		} catch (err) {
 			console.error('Authentication error:', err);
 			error = 'Failed to authenticate with Discord';
@@ -135,8 +134,12 @@
 	}
 
 	@keyframes spin {
-		0% { transform: rotate(0deg); }
-		100% { transform: rotate(360deg); }
+		0% {
+			transform: rotate(0deg);
+		}
+		100% {
+			transform: rotate(360deg);
+		}
 	}
 
 	.btn {
