@@ -6,18 +6,35 @@ This document provides detailed specifications for all features and user workflo
 
 ### Discord Integration
 
-- **OAuth2 Integration**: Users authenticate via Discord OAuth2 to verify server membership
-- **Role-based Access Control**: Three distinct user levels:
-  - **Viewers**: New users with read-only access to existing translations
-  - **Contributors**: Verified users who can submit and verify translations
-  - **Admins**: Full access including deletion, approval, and system management
+- **OAuth2 Integration**: Users authenticate via Discord OAuth2 with guild permissions
+- **Guild Membership Verification**: Automatic verification of Discord server membership and duration
+- **Role-based Access Control**: Three distinct user levels based on membership and configuration:
+  - **Guests**: Unauthenticated users with read-only access to translations
+  - **Contributors**: Guild members with 1+ month membership who can edit and verify translations
+  - **Admins**: Users configured in environment variables with full management access
 
-### User Verification Process
+### Automatic Role Assignment Process
 
-- **Initial Registration**: New users complete a form with Discord username
-- **Verification Queue**: Admin dashboard displays pending verification requests
-- **Eligibility Criteria**: Admins verify server membership duration (>1 month) and user standing
-- **Status Management**: Users receive notifications about verification status changes
+- **Guest Access**: Default role for non-authenticated users
+  - Access: View page only (public translation browser)
+  - No authentication required
+
+- **Contributor Verification**: Automatic role assignment based on guild membership
+  - Requirements: Discord authentication + verified 1+ month guild membership
+  - Access: View, Edit, and Verify pages
+  - Automatic role assignment upon successful authentication
+
+- **Admin Configuration**: Environment-based admin designation
+  - Configuration: Discord User IDs listed in `VITE_ADMIN_USER_IDS`
+  - Access: All pages including user Management
+  - Immediate admin role assignment regardless of guild membership duration
+
+### User Management Features
+
+- **Real-time Role Verification**: Continuous verification of guild membership status
+- **Admin Controls**: Ability to revoke contributor roles and manage user access
+- **Session Persistence**: Role information maintained across browser sessions
+- **Access Control**: Automatic page redirects based on user permissions
 
 ## 2. Translation Data Structure
 

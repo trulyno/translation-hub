@@ -30,11 +30,32 @@ The Discord OAuth2 authentication demo has been successfully implemented and is 
 
 ### Completed Features
 
-- **Client-Side Authentication System**: Pure client-side implementation optimized for static hosting (GitHub Pages)
-- **Discord OAuth2 Integration**: Authorization code grant flow with proper security measures
-- **Secure Deployment Strategy**: GitHub Secrets for credential management without repository exposure
-- **Responsive User Interface**: Beautiful, modern design with Discord branding and smooth animations
-- **Session Management**: Local storage for session persistence with reactive UI updates
+#### Core Authentication System
+- **Discord OAuth2 Integration**: Complete authorization code grant flow with guild membership verification
+- **Guild Membership Verification**: Checks if authenticated users have been guild members for 1+ months
+- **Role-Based Access Control**: Three-tier system (Guest, Contributor, Admin)
+- **Admin Configuration**: Admin users determined by Discord IDs in environment variables
+- **Session Management**: Persistent authentication state with localStorage
+
+#### Role-Based Demo Pages
+- **Central Dashboard** (`/`) - Main navigation hub with role-based menu and user profile
+- **View Page** (`/view`) - Public translation browser accessible to everyone
+- **Edit Page** (`/edit`) - Translation editing interface (contributors and admins only)
+- **Verify Page** (`/verify`) - Translation verification workflow (contributors and admins only)
+- **Management Page** (`/management`) - User management with role revocation (admins only)
+
+#### Access Control Features
+- **Automatic Role Assignment**: Based on guild membership duration and admin status
+- **Page Protection**: Automatic redirects for unauthorized access attempts
+- **UI Adaptation**: Role-based visibility of navigation elements and features
+- **User Information Display**: Avatar, username, email, and role badge
+
+#### Demo Functionality
+- **Translation Management**: Browse, search, filter, and edit translations
+- **Multi-language Support**: Language tabs and translation editing interface
+- **Verification Workflow**: Approve/reject pending translations with feedback
+- **User Management**: View user details, track guild membership, revoke contributor roles
+- **Responsive Design**: Modern UI with Discord branding and smooth animations
 
 ## 🔧 Technical Implementation
 
@@ -44,10 +65,21 @@ The application implements a client-side Discord OAuth2 flow specifically design
 
 #### Key Files and Components
 
-- **`src/lib/auth.js`** - Discord OAuth2 configuration and URL generation
-- **`src/lib/stores.js`** - Svelte stores for user state management
-- **`src/routes/auth/callback/+page.svelte`** - OAuth callback handler
-- **`src/routes/+page.svelte`** - Updated main page with client-side auth
+**Core Authentication:**
+- **`src/lib/auth.js`** - Discord OAuth2 configuration, guild membership verification, and role determination
+- **`src/lib/stores.js`** - Svelte stores for user state, authentication, and role management
+- **`src/routes/auth/callback/+page.svelte`** - OAuth callback handler with role assignment
+- **`src/lib/components/Navigation.svelte`** - Role-based navigation component
+
+**Application Pages:**
+- **`src/routes/+page.svelte`** - Central dashboard with role-based navigation menu
+- **`src/routes/view/+page.svelte`** - Translation browser (accessible to all users)
+- **`src/routes/edit/+page.svelte`** - Translation editing interface (contributors/admins)
+- **`src/routes/verify/+page.svelte`** - Translation verification workflow (contributors/admins)
+- **`src/routes/management/+page.svelte`** - User management system (admins only)
+
+**Configuration:**
+- **`.env`** - Environment variables including admin user IDs and Discord configuration
 - **`src/app.d.ts`** - TypeScript definitions (cleaned up)
 
 #### Deployment Configuration
@@ -72,8 +104,15 @@ The application implements a client-side Discord OAuth2 flow specifically design
 ```env
 # .env file for local development
 VITE_DISCORD_CLIENT_ID=your_discord_client_id
+VITE_DISCORD_CLIENT_SECRET=your_discord_secret_here
 VITE_REDIRECT_URI=http://localhost:5173/auth/callback
 VITE_APP_URL=http://localhost:5173
+
+# Guild Configuration
+VITE_DISCORD_GUILD_ID=your_guild_id_here
+
+# Admin User IDs (comma-separated Discord user IDs)
+VITE_ADMIN_USER_IDS=admin_user_id_1,admin_user_id_2
 ```
 
 #### Production Environment
@@ -81,27 +120,44 @@ VITE_APP_URL=http://localhost:5173
 ```env
 # Environment variables injected during GitHub Actions build
 VITE_DISCORD_CLIENT_ID=${DISCORD_CLIENT_ID}
+VITE_DISCORD_CLIENT_SECRET=${DISCORD_CLIENT_SECRET}
 VITE_REDIRECT_URI=https://username.github.io/translation-hub/auth/callback
 VITE_APP_URL=https://username.github.io/translation-hub
+VITE_DISCORD_GUILD_ID=${DISCORD_GUILD_ID}
+VITE_ADMIN_USER_IDS=${ADMIN_USER_IDS}
 ```
 
 ### How It Works
 
-The system demonstrates a complete Discord OAuth2 integration optimized for static hosting:
+The system demonstrates a complete Discord OAuth2 integration with guild membership verification optimized for static hosting:
 
 1. **User Interaction**: Click "Sign in with Discord" button
-2. **OAuth Redirect**: Browser navigates to Discord authorization URL
-3. **User Authorization**: User approves application permissions
+2. **OAuth Redirect**: Browser navigates to Discord authorization URL with guild permissions
+3. **User Authorization**: User approves application permissions including guild access
 4. **Callback Processing**: Discord redirects to `/auth/callback` with authorization code
-5. **Demo Simulation**: Application simulates user data for demonstration
-6. **State Management**: User information stored in reactive Svelte stores
-7. **UI Updates**: Interface dynamically updates to show authenticated state
+5. **Guild Membership Check**: Application verifies user's guild membership and join date
+6. **Role Assignment**: User role determined based on:
+   - Admin status (from environment variable user IDs)
+   - Guild membership duration (1+ months = contributor)
+   - Default guest role for non-members or recent members
+7. **State Management**: User information and role stored in reactive Svelte stores
+8. **UI Updates**: Interface dynamically updates with role-based navigation and access
+9. **Page Protection**: Automatic access control and redirects based on user role
 
 ### Features Demonstrated
 
 - ✅ **Discord OAuth2 Integration**
+- ✅ **Guild Membership Verification**
+- ✅ **Role-Based Access Control**
+- ✅ **Admin User Configuration**
 - ✅ **User Avatar Display**
 - ✅ **Username and Profile Info**
+- ✅ **Role Badge Display**
+- ✅ **Translation Management Demo**
+- ✅ **Multi-language Editing Interface**
+- ✅ **Translation Verification Workflow**
+- ✅ **User Management System**
+- ✅ **Contributor Role Revocation**
 - ✅ **Secure Credential Management**
 - ✅ **Responsive Design**
 - ✅ **Session Persistence**
@@ -138,6 +194,59 @@ const config = {
 };
 ```
 
+## 🎭 Role-Based Access Control
+
+### User Roles
+
+The application implements a three-tier role system:
+
+#### 🔒 Guest Role
+- **Access**: View page only
+- **Requirements**: No authentication required
+- **Permissions**: Browse and view translations, no editing capabilities
+- **UI Elements**: Limited navigation menu, sign-in prompt
+
+#### 👥 Contributor Role  
+- **Access**: View, Edit, and Verify pages
+- **Requirements**: Discord authentication + 1+ month guild membership
+- **Permissions**: View, edit, and verify translations
+- **UI Elements**: Full navigation except management features
+
+#### 👑 Admin Role
+- **Access**: All pages including Management
+- **Requirements**: Discord user ID listed in `VITE_ADMIN_USER_IDS` environment variable
+- **Permissions**: All contributor permissions + user management and role revocation
+- **UI Elements**: Complete navigation menu with management access
+
+### Role Determination Logic
+
+```javascript
+// From src/lib/auth.js
+export function determineUserRole(userId, guildMember) {
+	// Check if user is admin
+	if (discordConfig.adminUserIds.includes(userId)) {
+		return 'admin';
+	}
+
+	// Check if user is guild member for more than 1 month
+	if (guildMember && hasBeenMemberLongEnough(guildMember.joined_at)) {
+		return 'contributor';
+	}
+
+	// Default role
+	return 'guest';
+}
+```
+
+### Page Access Control
+
+Each page implements automatic access verification:
+
+- **Unauthorized Access**: Users are redirected to the main dashboard
+- **Role Checking**: Real-time verification of user permissions
+- **UI Adaptation**: Navigation and features adapt based on current role
+- **Persistent Sessions**: Role information maintained across browser sessions
+
 ## 🔐 Security Implementation
 
 ### Current Security Measures
@@ -170,16 +279,37 @@ For a full production deployment, consider adding:
 ### Design System
 
 - **Discord Branding**: Consistent with Discord's visual identity
+- **Role-Based Navigation**: Dynamic menu based on user permissions
 - **Responsive Layout**: Works seamlessly across desktop, tablet, and mobile devices
 - **Modern Animations**: Smooth transitions and loading states
 - **User Feedback**: Clear status indicators and error handling
 
 ### User Experience
 
-- **Profile Display**: Shows user avatar, username, email, and Discord ID
-- **Session Persistence**: Maintains login state across browser sessions
-- **Loading States**: Visual feedback during authentication process
-- **Error Handling**: Graceful handling of authentication failures
+- **Central Dashboard**: Role-based navigation hub with user profile display
+- **Profile Display**: Shows user avatar, username, email, Discord ID, and role badge
+- **Translation Management**: Search, filter, edit, and verify translations
+- **User Management**: Admin interface for viewing users and managing roles
+- **Session Persistence**: Maintains login state and role across browser sessions
+- **Loading States**: Visual feedback during authentication and data operations
+- **Error Handling**: Graceful handling of authentication failures and access denials
+
+### Role-Specific Interfaces
+
+#### Guest Interface
+- **Simple Navigation**: View page access only
+- **Sign-in Prompts**: Clear call-to-action for authentication
+- **Public Content**: Translation browser without editing capabilities
+
+#### Contributor Interface  
+- **Extended Navigation**: Access to View, Edit, and Verify pages
+- **Editing Tools**: Translation editing interface with language tabs
+- **Verification Workflow**: Approve/reject pending translations
+
+#### Admin Interface
+- **Full Navigation**: Access to all pages including Management
+- **User Management**: View user details, guild membership status
+- **Role Controls**: Revoke contributor roles and manage user access
 
 ## 📊 Performance Optimizations
 
@@ -224,7 +354,7 @@ For a full production deployment, consider adding:
 
 1. **Backend Integration**: Implement server-side token exchange for enhanced security
 2. **Real-time Features**: Add WebSocket support for live collaboration
-3. **Advanced Authentication**: Implement role-based access control
+3. **Database Integration**: Replace static demo data with dynamic database
 4. **Performance Monitoring**: Add analytics and performance tracking
 
 ### Scalability Considerations
@@ -238,33 +368,49 @@ For a full production deployment, consider adding:
 
 ### Technical Limitations
 
-- **Client-Side Only**: No server-side validation or processing
-- **Demo Mode**: Authentication simulation for demonstration purposes
+- **Client-Side Only**: No server-side validation or processing (suitable for demo/static hosting)
+- **Demo Data**: Translation and user data uses static demo content
 - **Local Storage**: Session management relies on browser storage
-- **Static Data**: Translation data stored in static JSON files
+- **Static Demo Mode**: Authentication works with mock data for demonstration
 
-### Production Requirements
+### Production Enhancements
 
-To transition to full production:
+For a full production deployment, consider adding:
 
 1. **Backend API**: Implement server-side authentication and data management
-2. **Database Integration**: Replace static JSON with dynamic database
+2. **Database Integration**: Replace static demo data with dynamic database
 3. **Real-time Updates**: Add WebSocket or SSE for live collaboration
-4. **Advanced Security**: Implement comprehensive security measures
+4. **Advanced Security**: Implement server-side session management and token handling
 
 ## 🎯 Next Steps
 
 ### Immediate Actions
 
-1. **Repository Setup**: Configure GitHub Secrets for Discord Client ID
-2. **Discord Application**: Set up production redirect URIs
-3. **Deployment Testing**: Verify production deployment works correctly
+1. **Production Configuration**: Configure GitHub Secrets for Discord application credentials
+2. **Discord Application Setup**: Add production redirect URIs and configure guild access
+3. **Admin Configuration**: Set actual Discord user IDs in production environment
+4. **Deployment Testing**: Verify production deployment with real credentials
 
 ### Development Roadmap
 
-1. **Phase 2**: Implement core translation management features
-2. **Phase 3**: Add user role management and verification system
-3. **Phase 4**: Develop collaborative editing capabilities
-4. **Phase 5**: Implement export and integration features
+1. **✅ Phase 1 Complete**: Role-based access control and guild membership verification
+2. **Phase 2**: Implement backend API for secure data management
+3. **Phase 3**: Add real-time collaboration features
+4. **Phase 4**: Develop advanced translation tools and workflows
+5. **Phase 5**: Implement export and integration features
 
-The current implementation provides a solid foundation for the full translation management system while demonstrating secure deployment practices for static web applications.
+### Testing Checklist
+
+#### ✅ Completed
+- Build process verification
+- Role-based page access control
+- Environment configuration
+- UI/UX implementation
+
+#### 🔄 Ready for Testing
+- Discord OAuth flow with real credentials
+- Guild membership verification with actual guild
+- Admin role assignment and management features
+- Contributor role granting and revocation
+
+The current implementation provides a complete foundation for the full translation management system with Discord guild integration and demonstrates secure deployment practices for static web applications.

@@ -1,6 +1,7 @@
 <script>
-	import { user, isAuthenticated, clearAuth, getAvatarUrl } from '$lib/stores.js';
+	import { user, isAuthenticated, userRole, clearAuth, getAvatarUrl } from '$lib/stores.js';
 	import { getDiscordAuthUrl } from '$lib/auth.js';
+	import Navigation from '$lib/components/Navigation.svelte';
 
 	function handleSignIn() {
 		window.location.href = getDiscordAuthUrl();
@@ -9,11 +10,26 @@
 	function handleSignOut() {
 		clearAuth();
 	}
+
+	// Check if user has access to a specific page
+	/**
+	 * @param {string} requiredRole
+	 * @returns {boolean}
+	 */
+	function hasAccess(requiredRole) {
+		const currentRole = $userRole;
+		
+		if (requiredRole === 'guest') return true;
+		if (requiredRole === 'contributor') return currentRole === 'contributor' || currentRole === 'admin';
+		if (requiredRole === 'admin') return currentRole === 'admin';
+		
+		return false;
+	}
 </script>
 
 <svelte:head>
-	<title>Translation Hub - Discord OAuth2 Demo</title>
-	<meta name="description" content="Discord OAuth2 authentication demo for Translation Hub" />
+	<title>Translation Hub - Central Dashboard</title>
+	<meta name="description" content="Central dashboard for the Translation Hub" />
 </svelte:head>
 
 <main class="container">
@@ -32,8 +48,43 @@
 				<div class="user-info">
 					<h2>Welcome back, {$user.username}! 👋</h2>
 					<p class="user-email">{$user.email || 'No email provided'}</p>
-					<p class="user-id">User ID: {$user.id || 'N/A'}</p>
+					<p class="user-role">Role: <span class="role-badge role-{$userRole}">{$userRole}</span></p>
 				</div>
+			</div>
+
+			<!-- Central Navigation Menu -->
+			<div class="menu-grid">
+				<a href="/view" class="menu-card">
+					<div class="menu-icon">👁️</div>
+					<h3>View Translations</h3>
+					<p>Browse and search through all translations</p>
+					<span class="access-level">Everyone</span>
+				</a>
+
+				{#if hasAccess('contributor')}
+					<a href="/edit" class="menu-card">
+						<div class="menu-icon">✏️</div>
+						<h3>Edit Translations</h3>
+						<p>Create and modify translations</p>
+						<span class="access-level">Contributors & Admins</span>
+					</a>
+
+					<a href="/verify" class="menu-card">
+						<div class="menu-icon">✅</div>
+						<h3>Verify Translations</h3>
+						<p>Review and approve translations</p>
+						<span class="access-level">Contributors & Admins</span>
+					</a>
+				{/if}
+
+				{#if hasAccess('admin')}
+					<a href="/management" class="menu-card">
+						<div class="menu-icon">⚙️</div>
+						<h3>User Management</h3>
+						<p>Manage users and permissions</p>
+						<span class="access-level">Admins Only</span>
+					</a>
+				{/if}
 			</div>
 
 			<div class="actions">
@@ -58,19 +109,18 @@
 	</div>
 
 	<div class="info-section">
-		<h3>About This Demo</h3>
+		<h3>About Translation Hub</h3>
 		<p>
-			This is a demonstration of Discord OAuth2 integration for the Star Technology Translations Hub
-			project. When you sign in, we'll display your Discord avatar and username.
+			A role-based translation management system with Discord OAuth2 integration. 
+			Your access level is determined by your Discord server membership duration.
 		</p>
 
 		<div class="features">
-			<h4>Features:</h4>
+			<h4>Role System:</h4>
 			<ul>
-				<li>✅ Discord OAuth2 authentication</li>
-				<li>✅ User avatar and name display</li>
-				<li>✅ Secure session management</li>
-				<li>✅ Responsive design</li>
+				<li>🎭 <strong>Guest:</strong> Can view translations (default for new users)</li>
+				<li>👤 <strong>Contributor:</strong> Discord members for 1+ months (can edit and verify)</li>
+				<li>⚡ <strong>Admin:</strong> Server administrators (full access)</li>
 			</ul>
 		</div>
 	</div>
@@ -149,11 +199,91 @@
 		margin: 0.25rem 0;
 	}
 
-	.user-id {
-		color: #999;
-		font-size: 0.9rem;
-		font-family: monospace;
+	.user-role {
+		color: #666;
 		margin: 0.25rem 0;
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+	}
+
+	.role-badge {
+		padding: 0.25rem 0.75rem;
+		border-radius: 1rem;
+		font-size: 0.8rem;
+		font-weight: 600;
+		text-transform: uppercase;
+	}
+
+	.role-guest {
+		background: #f3f4f6;
+		color: #374151;
+	}
+
+	.role-contributor {
+		background: #dbeafe;
+		color: #1e40af;
+	}
+
+	.role-admin {
+		background: #fef3c7;
+		color: #d97706;
+	}
+
+	.menu-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+		gap: 1.5rem;
+		width: 100%;
+		max-width: 900px;
+		margin: 2rem 0;
+	}
+
+	.menu-card {
+		background: white;
+		border-radius: 1rem;
+		padding: 2rem;
+		box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+		text-decoration: none;
+		color: inherit;
+		transition: all 0.3s ease;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+		position: relative;
+	}
+
+	.menu-card:hover {
+		transform: translateY(-4px);
+		box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+	}
+
+	.menu-icon {
+		font-size: 3rem;
+		margin-bottom: 1rem;
+	}
+
+	.menu-card h3 {
+		margin: 0 0 0.5rem 0;
+		color: #333;
+		font-size: 1.25rem;
+	}
+
+	.menu-card p {
+		color: #666;
+		margin: 0 0 1rem 0;
+		line-height: 1.4;
+		flex-grow: 1;
+	}
+
+	.access-level {
+		background: #f1f3f4;
+		color: #5f6368;
+		padding: 0.25rem 0.75rem;
+		border-radius: 1rem;
+		font-size: 0.8rem;
+		font-weight: 500;
 	}
 
 	.login-card {

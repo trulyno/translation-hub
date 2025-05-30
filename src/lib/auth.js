@@ -2,10 +2,12 @@
 export const discordConfig = {
 	clientId: import.meta.env.VITE_DISCORD_CLIENT_ID,
 	clientSecret: import.meta.env.VITE_DISCORD_CLIENT_SECRET,
+	guildId: import.meta.env.VITE_DISCORD_GUILD_ID,
+	adminUserIds: import.meta.env.VITE_ADMIN_USER_IDS?.split(',') || [],
 	redirectUri:
 		import.meta.env.VITE_REDIRECT_URI ||
 		(typeof window !== 'undefined' ? `${window.location.origin}/auth/callback` : ''),
-	scope: 'identify email',
+	scope: 'identify email guilds guilds.members.read',
 	responseType: 'code'
 };
 
@@ -20,6 +22,10 @@ export function getDiscordAuthUrl() {
 	return `https://discord.com/api/oauth2/authorize?${params.toString()}`;
 }
 
+/**
+ * @param {string} code
+ * @returns {Promise<any>}
+ */
 export async function exchangeCodeForToken(code) {
 	// In a real static deployment, you'd need a serverless function or backend API
 	// For demo purposes, we'll simulate the token exchange
@@ -47,6 +53,10 @@ export async function exchangeCodeForToken(code) {
 	return response.json();
 }
 
+/**
+ * @param {string} accessToken
+ * @returns {Promise<DiscordUser>}
+ */
 export async function getDiscordUser(accessToken) {
 	const response = await fetch('https://discord.com/api/users/@me', {
 		headers: {
@@ -59,4 +69,64 @@ export async function getDiscordUser(accessToken) {
 	}
 
 	return response.json();
+}
+
+/**
+ * Check if user is member of the specified guild
+ * @param {string} accessToken
+ * @returns {Promise<GuildMember | null>}
+ */
+export async function checkGuildMembership(accessToken) {
+	try {
+		const response = await fetch(`https://discord.com/api/users/@me/guilds/${discordConfig.guildId}/member`, {
+			headers: {
+				Authorization: `Bearer ${accessToken}`
+			}
+		});
+
+		if (!response.ok) {
+			return null;
+		}
+
+		return response.json();
+	} catch (error) {
+		console.error('Error checking guild membership:', error);
+		return null;
+	}
+}
+
+/**
+ * Check if user has been a guild member for more than 1 month
+ * @param {string} joinedAt
+ * @returns {boolean}
+ */
+export function hasBeenMemberLongEnough(joinedAt) {
+	if (!joinedAt) return false;
+	
+	const joinDate = new Date(joinedAt);
+	const oneMonthAgo = new Date();
+	oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+	
+	return joinDate <= oneMonthAgo;
+}
+
+/**
+ * Determine user role based on membership and admin status
+ * @param {string} userId
+ * @param {GuildMember | null} guildMember
+ * @returns {string}
+ */
+export function determineUserRole(userId, guildMember) {
+	// Check if user is admin
+	if (discordConfig.adminUserIds.includes(userId)) {
+		return 'admin';
+	}
+
+	// Check if user is guild member for more than 1 month
+	if (guildMember && hasBeenMemberLongEnough(guildMember.joined_at)) {
+		return 'contributor';
+	}
+
+	// Default role
+	return 'guest';
 }

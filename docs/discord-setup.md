@@ -85,9 +85,31 @@ These scopes are configured in the client-side code, not in the Discord Develope
 2. **Configure Environment Variables**
    ```env
    VITE_DISCORD_CLIENT_ID=your_application_id_here
+   VITE_DISCORD_CLIENT_SECRET=your_client_secret_here
    VITE_REDIRECT_URI=http://localhost:5173/auth/callback
    VITE_APP_URL=http://localhost:5173
+   VITE_DISCORD_GUILD_ID=your_guild_id_here
+   VITE_ADMIN_USER_IDS=admin_user_id_1,admin_user_id_2
    ```
+
+### Guild Configuration
+
+To enable guild membership verification:
+
+1. **Get Your Guild ID**
+   - Open Discord in your browser or desktop app
+   - Go to your server/guild
+   - Right-click on the server name
+   - Select "Copy Server ID" (requires Developer Mode enabled)
+   - Paste this ID as `VITE_DISCORD_GUILD_ID`
+
+2. **Configure Admin Users**
+   - Get Discord User IDs of administrators
+   - Right-click on user profiles → "Copy User ID"
+   - Add comma-separated IDs to `VITE_ADMIN_USER_IDS`
+
+3. **Enable Developer Mode** (if not already enabled)
+   - Discord Settings → Advanced → Developer Mode → Enable
 
 ### Production Setup
 
@@ -98,11 +120,41 @@ For GitHub Pages deployment, credentials are managed through GitHub Secrets:
    - Navigate to your GitHub repository
    - Go to Settings → Secrets and variables → Actions
 
-2. **Add Repository Secret**
-   - Click "New repository secret"
-   - Name: `DISCORD_CLIENT_ID`
-   - Value: Your Discord Application ID
-   - Click "Add secret"
+2. **Add Repository Secrets**
+   
+   Add the following secrets to your GitHub repository:
+   
+   - **Name**: `DISCORD_CLIENT_ID`
+     - **Value**: Your Discord Application ID
+   
+   - **Name**: `DISCORD_CLIENT_SECRET`
+     - **Value**: Your Discord Application Client Secret
+   
+   - **Name**: `DISCORD_GUILD_ID`
+     - **Value**: Your Discord Server/Guild ID
+   
+   - **Name**: `ADMIN_USER_IDS`
+     - **Value**: Comma-separated Discord User IDs for administrators
+     - **Example**: `123456789012345678,987654321098765432`
+
+### Role-Based Access Control
+
+The application implements a three-tier role system:
+
+#### 🔒 Guest Role
+- **Access**: View page only (public translation browser)
+- **Requirements**: No authentication required
+- **Description**: Default role for unauthenticated users
+
+#### 👥 Contributor Role  
+- **Access**: View, Edit, and Verify pages
+- **Requirements**: Discord authentication + 1+ month guild membership
+- **Description**: Guild members who have been part of the server for over 1 month
+
+#### 👑 Admin Role
+- **Access**: All pages including Management
+- **Requirements**: Discord User ID listed in `ADMIN_USER_IDS` environment variable
+- **Description**: Server administrators with full management capabilities
 
 ## Step 6: Testing the Setup
 

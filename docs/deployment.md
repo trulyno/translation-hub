@@ -343,8 +343,11 @@ Create `.env.local`:
 
 ```env
 VITE_DISCORD_CLIENT_ID=your_discord_client_id
+VITE_DISCORD_CLIENT_SECRET=your_discord_secret_here
 VITE_DISCORD_REDIRECT_URI=http://localhost:5173/auth/callback
 VITE_API_BASE_URL=http://localhost:5173
+VITE_DISCORD_GUILD_ID=your_guild_id_here
+VITE_ADMIN_USER_IDS=admin_user_id_1,admin_user_id_2
 VITE_ENVIRONMENT=development
 ```
 
@@ -354,10 +357,27 @@ Environment variables are configured in GitHub repository secrets and injected d
 
 ```env
 VITE_DISCORD_CLIENT_ID=${{ secrets.DISCORD_CLIENT_ID }}
+VITE_DISCORD_CLIENT_SECRET=${{ secrets.DISCORD_CLIENT_SECRET }}
 VITE_DISCORD_REDIRECT_URI=https://your-domain.github.io/translation-hub/auth/callback
 VITE_API_BASE_URL=https://your-domain.github.io/translation-hub
+VITE_DISCORD_GUILD_ID=${{ secrets.DISCORD_GUILD_ID }}
+VITE_ADMIN_USER_IDS=${{ secrets.ADMIN_USER_IDS }}
 VITE_ENVIRONMENT=production
 ```
+
+### Role-Based Access Control
+
+The application implements three access levels:
+
+- **Guest Role**: Public access to view translations
+- **Contributor Role**: Guild members with 1+ month membership (edit and verify access)
+- **Admin Role**: Users listed in `ADMIN_USER_IDS` (full management access)
+
+Required GitHub Secrets for production:
+- `DISCORD_CLIENT_ID`: Discord Application ID
+- `DISCORD_CLIENT_SECRET`: Discord Application Secret  
+- `DISCORD_GUILD_ID`: Your Discord Server ID for membership verification
+- `ADMIN_USER_IDS`: Comma-separated Discord User IDs for administrators
 
 ## Performance Optimization
 

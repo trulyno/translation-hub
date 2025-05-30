@@ -3,7 +3,7 @@
 	import { goto } from '$app/navigation';
 	import { base } from '$app/paths';
 	import { setAuth, clearAuth } from '$lib/stores.js';
-	import { exchangeCodeForToken, getDiscordUser } from '$lib/auth.js';
+	import { exchangeCodeForToken, getDiscordUser, checkGuildMembership, determineUserRole } from '$lib/auth.js';
 
 	let status = 'Processing...';
 	let error = null;
@@ -29,24 +29,17 @@
 			status = 'Exchanging code for token...';
 			const tokenData = await exchangeCodeForToken(code);
 
-			// For demo purposes with static deployment, we'll simulate this
-			// In production, this would be handled by a backend service
-			console.log('Authorization code received:', code);
-
-			// Simulate user data for demo (in production, use the token exchange)
-			// const userData = {
-			// 	id: 'demo_user_' + Date.now(),
-			// 	username: 'Demo User',
-			// 	discriminator: '0001',
-			// 	avatar: 'https://cdn.discordapp.com/embed/avatars/0.png',
-			// 	email: 'demo@example.com'
-			// };
+			status = 'Getting user information...';
 			const userData = await getDiscordUser(tokenData.access_token);
 
-			status = 'Getting user information...';
+			status = 'Checking guild membership...';
+			const guildMemberData = await checkGuildMembership(tokenData.access_token);
+			
+			status = 'Determining user role...';
+			const role = determineUserRole(userData.id, guildMemberData);
 
-			// Set auth state
-			setAuth(userData, tokenData.access_token);
+			// Set auth state with role and guild membership data
+			setAuth(userData, tokenData.access_token, role, guildMemberData);
 
 			status = 'Success! Redirecting...';
 
