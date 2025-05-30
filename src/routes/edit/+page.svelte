@@ -161,7 +161,7 @@
 			</div>
 
 			<div class="translations">
-				{#each filteredTranslations as translation, index}
+				{#each filteredTranslations as translation (translation.id)}
 					<div
 						class="translation-item {selectedTranslation === translation ? 'selected' : ''}"
 						on:click={() => selectTranslation(translation)}
@@ -169,7 +169,7 @@
 						<div class="translation-key">{translation.key}</div>
 						<div class="translation-base">{translation.baseText}</div>
 						<div class="translation-languages">
-							{#each languages as lang, index}
+							{#each languages as lang (lang.id)}
 								{#if translation.languages[lang]}
 									<span
 										class="status-dot"
@@ -203,7 +203,7 @@
 				<div class="language-selector">
 					<label>Editing Language:</label>
 					<div class="language-tabs">
-						{#each languages as lang, index}
+						{#each languages as lang (lang.id)}
 							<button
 								class="language-tab {editingLanguage === lang ? 'active' : ''}"
 								on:click={() => changeLanguage(lang)}
@@ -247,7 +247,7 @@
 				<!-- Current Translations -->
 				<div class="current-translations">
 					<h4>Current Translations:</h4>
-					{#each Object.entries(selectedTranslation.languages) as [lang, data], index}
+					{#each Object.entries(selectedTranslation.languages) as [lang, data] (lang.id)}
 						<div class="current-translation">
 							<div class="current-header">
 								<span class="current-lang">{lang.toUpperCase()}</span>
