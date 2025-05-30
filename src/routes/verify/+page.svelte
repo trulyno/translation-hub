@@ -1,5 +1,5 @@
 <script>
-	import { user, isAuthenticated, userRole } from '$lib/stores.js';
+	import { user, userRole } from '$lib/stores.js';
 	import { onMount } from 'svelte';
 	import { base } from '$app/paths';
 	import { goto } from '$app/navigation';
@@ -7,7 +7,6 @@
 	let pendingTranslations = [];
 	let filteredTranslations = [];
 	let selectedTranslation = null;
-	let selectedLanguage = '';
 	let verificationFeedback = '';
 	let filterStatus = 'all';
 	let searchTerm = '';
@@ -93,7 +92,6 @@
 
 	function selectTranslation(translation) {
 		selectedTranslation = translation;
-		selectedLanguage = translation.language;
 		verificationFeedback = translation.feedback || '';
 	}
 
@@ -215,7 +213,7 @@
 					class="search-input"
 				/>
 				<select bind:value={filterStatus} class="status-filter">
-					{#each statusOptions as status}
+					{#each statusOptions as status (status.id)}
 						<option value={status}>
 							{status === 'all' ? 'All Status' : status.charAt(0).toUpperCase() + status.slice(1)}
 						</option>
@@ -224,7 +222,7 @@
 			</div>
 
 			<div class="translations">
-				{#each filteredTranslations as translation}
+				{#each filteredTranslations as translation (translation.id)}
 					<div
 						class="translation-item {selectedTranslation === translation ? 'selected' : ''}"
 						on:click={() => selectTranslation(translation)}

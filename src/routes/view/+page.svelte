@@ -1,5 +1,4 @@
 <script>
-	import { user, isAuthenticated, userRole } from '$lib/stores.js';
 	import { onMount } from 'svelte';
 	import { base } from '$app/paths';
 
@@ -120,7 +119,7 @@
 		<div class="filter-group">
 			<label for="category">Category:</label>
 			<select id="category" bind:value={selectedCategory}>
-				{#each categories as category}
+				{#each categories as category (category.id)}
 					<option value={category}>{category === 'all' ? 'All Categories' : category}</option>
 				{/each}
 			</select>
@@ -129,7 +128,7 @@
 		<div class="filter-group">
 			<label for="language">Language:</label>
 			<select id="language" bind:value={selectedLanguage}>
-				{#each languages as language}
+				{#each languages as language (language.id)}
 					<option value={language}>
 						{language === 'all' ? 'All Languages' : language.toUpperCase()}
 					</option>
@@ -147,7 +146,7 @@
 	</div>
 
 	<div class="translations-grid">
-		{#each filteredTranslations as translation}
+		{#each filteredTranslations as translation (translation.id)}
 			<div class="translation-card">
 				<div class="translation-header">
 					<h3>{translation.key}</h3>
@@ -160,7 +159,7 @@
 				</div>
 
 				<div class="languages">
-					{#each Object.entries(translation.languages) as [lang, data]}
+					{#each Object.entries(translation.languages) as [lang, data] (lang.id)}
 						<div class="language-item">
 							<div class="language-header">
 								<span class="language-code">{lang.toUpperCase()}</span>

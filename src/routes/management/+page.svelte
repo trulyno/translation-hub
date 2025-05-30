@@ -235,7 +235,7 @@
 					class="search-input"
 				/>
 				<select bind:value={filterRole} class="role-filter">
-					{#each roleOptions as role}
+					{#each roleOptions as role (role.id)}
 						<option value={role}>
 							{role === 'all' ? 'All Roles' : role.charAt(0).toUpperCase() + role.slice(1)}
 						</option>
@@ -244,7 +244,7 @@
 			</div>
 
 			<div class="users-list">
-				{#each filteredUsers as user}
+				{#each filteredUsers as user (user.id)}
 					<div
 						class="user-item {selectedUser === user ? 'selected' : ''}"
 						on:click={() => selectUser(user)}
