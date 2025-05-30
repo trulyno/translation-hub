@@ -1,5 +1,6 @@
 <script>
 	import { user, isAuthenticated, userRole, clearAuth, getAvatarUrl } from '$lib/stores.js';
+	import { base } from '$app/paths';
 	import { getDiscordAuthUrl } from '$lib/auth.js';
 
 	function handleSignIn() {
@@ -56,7 +57,7 @@
 
 			<!-- Central Navigation Menu -->
 			<div class="menu-grid">
-				<a href="/view" class="menu-card">
+				<a href={(base || '/') + 'view'} class="menu-card">
 					<div class="menu-icon">👁️</div>
 					<h3>View Translations</h3>
 					<p>Browse and search through all translations</p>
@@ -64,14 +65,14 @@
 				</a>
 
 				{#if hasAccess('contributor')}
-					<a href="/edit" class="menu-card">
+					<a href={(base || '/') + 'edit'} class="menu-card">
 						<div class="menu-icon">✏️</div>
 						<h3>Edit Translations</h3>
 						<p>Create and modify translations</p>
 						<span class="access-level">Contributors & Admins</span>
 					</a>
 
-					<a href="/verify" class="menu-card">
+					<a href={(base || '/') + 'verify'} class="menu-card">
 						<div class="menu-icon">✅</div>
 						<h3>Verify Translations</h3>
 						<p>Review and approve translations</p>
@@ -80,7 +81,7 @@
 				{/if}
 
 				{#if hasAccess('admin')}
-					<a href="/management" class="menu-card">
+					<a href={(base || '/') + 'management'} class="menu-card">
 						<div class="menu-icon">⚙️</div>
 						<h3>User Management</h3>
 						<p>Manage users and permissions</p>
