@@ -1,5 +1,5 @@
 <script>
-	import { user, isAuthenticated, userRole, updateUserRole } from '$lib/stores.js';
+	import { userRole } from '$lib/stores.js';
 	import { onMount } from 'svelte';
 	import { base } from '$app/paths';
 	import { goto } from '$app/navigation';

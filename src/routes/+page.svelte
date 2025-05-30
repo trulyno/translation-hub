@@ -1,7 +1,6 @@
 <script>
 	import { user, isAuthenticated, userRole, clearAuth, getAvatarUrl } from '$lib/stores.js';
 	import { getDiscordAuthUrl } from '$lib/auth.js';
-	import Navigation from '$lib/components/Navigation.svelte';
 
 	function handleSignIn() {
 		window.location.href = getDiscordAuthUrl();

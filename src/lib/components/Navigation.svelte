@@ -1,5 +1,6 @@
 <script>
 	import { user, isAuthenticated, userRole, clearAuth, getAvatarUrl } from '$lib/stores.js';
+    import { base } from '$app/paths';
 	import { getDiscordAuthUrl } from '$lib/auth.js';
 
 	function handleSignIn() {

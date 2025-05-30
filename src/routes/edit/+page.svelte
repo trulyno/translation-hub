@@ -1,5 +1,5 @@
 <script>
-	import { user, isAuthenticated, userRole } from '$lib/stores.js';
+	import { userRole } from '$lib/stores.js';
 	import { onMount } from 'svelte';
 	import { base } from '$app/paths';
 	import { goto } from '$app/navigation';
@@ -161,7 +161,7 @@
 			</div>
 
 			<div class="translations">
-				{#each filteredTranslations as translation}
+				{#each filteredTranslations as translation, index}
 					<div
 						class="translation-item {selectedTranslation === translation ? 'selected' : ''}"
 						on:click={() => selectTranslation(translation)}
@@ -169,7 +169,7 @@
 						<div class="translation-key">{translation.key}</div>
 						<div class="translation-base">{translation.baseText}</div>
 						<div class="translation-languages">
-							{#each languages as lang}
+							{#each languages as lang, index}
 								{#if translation.languages[lang]}
 									<span
 										class="status-dot"
@@ -203,7 +203,7 @@
 				<div class="language-selector">
 					<label>Editing Language:</label>
 					<div class="language-tabs">
-						{#each languages as lang}
+						{#each languages as lang, index}
 							<button
 								class="language-tab {editingLanguage === lang ? 'active' : ''}"
 								on:click={() => changeLanguage(lang)}
@@ -247,7 +247,7 @@
 				<!-- Current Translations -->
 				<div class="current-translations">
 					<h4>Current Translations:</h4>
-					{#each Object.entries(selectedTranslation.languages) as [lang, data]}
+					{#each Object.entries(selectedTranslation.languages) as [lang, data], index}
 						<div class="current-translation">
 							<div class="current-header">
 								<span class="current-lang">{lang.toUpperCase()}</span>
