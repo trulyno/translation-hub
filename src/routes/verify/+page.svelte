@@ -130,7 +130,6 @@
 
 	function clearSelection() {
 		selectedTranslation = null;
-		selectedLanguage = '';
 		verificationFeedback = '';
 	}
 
