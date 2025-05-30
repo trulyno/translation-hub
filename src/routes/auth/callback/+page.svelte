@@ -3,7 +3,12 @@
 	import { goto } from '$app/navigation';
 	import { base } from '$app/paths';
 	import { setAuth, clearAuth } from '$lib/stores.js';
-	import { exchangeCodeForToken, getDiscordUser, checkGuildMembership, determineUserRole } from '$lib/auth.js';
+	import {
+		exchangeCodeForToken,
+		getDiscordUser,
+		checkGuildMembership,
+		determineUserRole
+	} from '$lib/auth.js';
 
 	let status = 'Processing...';
 	let error = null;
@@ -34,7 +39,7 @@
 
 			status = 'Checking guild membership...';
 			const guildMemberData = await checkGuildMembership(tokenData.access_token);
-			
+
 			status = 'Determining user role...';
 			const role = determineUserRole(userData.id, guildMemberData);
 

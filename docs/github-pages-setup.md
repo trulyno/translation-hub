@@ -41,18 +41,15 @@ The application uses GitHub Actions for automated deployment to GitHub Pages wit
    - Navigate to "Secrets and variables" → "Actions"
 
 2. **Add Required Repository Secrets**
-   
+
    Add the following secrets one by one:
-   
+
    - **Name**: `DISCORD_CLIENT_ID`
      - **Value**: Your Discord Application ID (from Discord Developer Portal)
-   
    - **Name**: `DISCORD_CLIENT_SECRET`
      - **Value**: Your Discord Application Client Secret
-   
    - **Name**: `DISCORD_GUILD_ID`
      - **Value**: Your Discord Server/Guild ID (enable Developer Mode in Discord to copy)
-   
    - **Name**: `ADMIN_USER_IDS`
      - **Value**: Comma-separated Discord User IDs for administrators
      - **Example**: `123456789012345678,987654321098765432`
@@ -62,11 +59,13 @@ The application uses GitHub Actions for automated deployment to GitHub Pages wit
 The application implements guild membership verification with three access levels:
 
 #### User Roles
+
 - **Guest**: Public access to view translations only
 - **Contributor**: Guild members with 1+ month membership (can edit and verify)
 - **Admin**: Users listed in `ADMIN_USER_IDS` (full management access)
 
 #### Guild Membership Requirements
+
 - **Guild ID**: Your Discord server ID for membership verification
 - **Membership Duration**: Users must be guild members for 1+ months to become contributors
 - **Admin Override**: Users in `ADMIN_USER_IDS` automatically get admin role regardless of guild membership
@@ -152,17 +151,20 @@ To trigger deployment manually:
    - Replace `yourusername` with your GitHub username
 
 2. **Test Role-Based Access**
-   
+
    **Guest Testing:**
+
    - Without signing in, verify only View page is accessible
    - Try accessing `/edit`, `/verify`, `/management` - should redirect to home
-   
+
    **Authentication Testing:**
+
    - Click "Sign in with Discord"
    - Authorize the application with guild permissions
    - Verify successful redirect and user info display
-   
+
    **Role Verification:**
+
    - Check role badge display (Guest/Contributor/Admin)
    - Verify navigation menu shows appropriate options for your role
    - Test page access based on your guild membership and admin status
@@ -184,7 +186,7 @@ VITE_ADMIN_USER_IDS=${ADMIN_USER_IDS}
 
 These are injected from:
 
-- **GitHub Secrets**: 
+- **GitHub Secrets**:
   - `DISCORD_CLIENT_ID` - Discord Application ID
   - `DISCORD_CLIENT_SECRET` - Discord Application Secret
   - `DISCORD_GUILD_ID` - Your Discord Server ID
@@ -197,10 +199,12 @@ These are injected from:
 After deployment, test the role system:
 
 1. **Guest Access**: Visit the site without authentication
+
    - Should only have access to the View page
    - Sign-in prompt should be visible
 
 2. **Contributor Access**: Sign in as a guild member with 1+ month membership
+
    - Should have access to View, Edit, and Verify pages
    - Management page should be restricted
 

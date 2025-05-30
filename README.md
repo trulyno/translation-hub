@@ -110,6 +110,7 @@ For complete deployment instructions, see the [GitHub Pages Setup Guide](docs/gi
 ## 🎯 Key Features
 
 ### Authentication & Access Control
+
 - **Discord OAuth2 Integration** - Complete authentication flow with guild membership verification
 - **Guild Membership Verification** - Automatic role assignment based on Discord server membership duration
 - **Three-Tier Role System**:
@@ -118,6 +119,7 @@ For complete deployment instructions, see the [GitHub Pages Setup Guide](docs/gi
   - **Admin**: Environment-configured users with full management capabilities
 
 ### Translation Management
+
 - **Multi-page Interface** - Role-based navigation with dedicated pages for different functions
 - **Translation Browser** - Search, filter, and view translations with status indicators
 - **Editing Interface** - Multi-language editing with tab navigation and save functionality
@@ -125,6 +127,7 @@ For complete deployment instructions, see the [GitHub Pages Setup Guide](docs/gi
 - **User Management** - Admin interface for viewing users and managing contributor roles
 
 ### Technical Features
+
 - **Static Site Deployment** - Optimized for GitHub Pages with secure credential management
 - **Responsive Design** - Modern UI with Discord branding and smooth animations
 - **Session Persistence** - Maintains authentication state across browser sessions
@@ -145,6 +148,7 @@ This project features a **fully functional Discord guild membership verification
 ### ✅ Completed Features
 
 #### Core System
+
 - Discord OAuth2 authentication with guild integration
 - Guild membership verification (1+ month requirement for contributor role)
 - Three-tier role-based access control (Guest/Contributor/Admin)
@@ -152,6 +156,7 @@ This project features a **fully functional Discord guild membership verification
 - Session persistence and automated role assignment
 
 #### User Interface
+
 - Central dashboard with role-based navigation
 - Public translation browser (View page)
 - Translation editing interface with multi-language support (Edit page)
@@ -160,6 +165,7 @@ This project features a **fully functional Discord guild membership verification
 - Responsive design with Discord branding and smooth animations
 
 #### Technical Implementation
+
 - GitHub Pages deployment with secure credential management
 - Static site generation optimized for CDN distribution
 - Automated CI/CD pipeline with environment variable injection

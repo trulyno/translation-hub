@@ -16,10 +16,12 @@ This document provides detailed specifications for all features and user workflo
 ### Automatic Role Assignment Process
 
 - **Guest Access**: Default role for non-authenticated users
+
   - Access: View page only (public translation browser)
   - No authentication required
 
 - **Contributor Verification**: Automatic role assignment based on guild membership
+
   - Requirements: Discord authentication + verified 1+ month guild membership
   - Access: View, Edit, and Verify pages
   - Automatic role assignment upon successful authentication

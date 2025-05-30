@@ -5,6 +5,7 @@ Use this checklist to verify that the Translation Hub is properly deployed and c
 ## ✅ Pre-Deployment Setup
 
 ### Discord Application Configuration
+
 - [ ] Discord application created at [Discord Developer Portal](https://discord.com/developers/applications)
 - [ ] OAuth2 redirect URIs configured:
   - [ ] Development: `http://localhost:5173/auth/callback`
@@ -14,11 +15,13 @@ Use this checklist to verify that the Translation Hub is properly deployed and c
 - [ ] Client Secret copied (if using server-side features)
 
 ### Guild Configuration
+
 - [ ] Discord Developer Mode enabled
 - [ ] Guild/Server ID copied
 - [ ] Admin user Discord IDs identified and copied
 
 ### GitHub Repository Setup
+
 - [ ] Repository created with translation-hub code
 - [ ] GitHub Pages enabled with "GitHub Actions" source
 - [ ] Repository secrets configured:
@@ -30,12 +33,14 @@ Use this checklist to verify that the Translation Hub is properly deployed and c
 ## ✅ Deployment Verification
 
 ### Build Process
+
 - [ ] Push to main branch triggers GitHub Actions
 - [ ] Build completes successfully without errors
 - [ ] Environment variables properly injected during build
 - [ ] Static files generated in build directory
 
 ### Live Site Testing
+
 - [ ] GitHub Pages site accessible at `https://yourusername.github.io/translation-hub/`
 - [ ] Application loads without JavaScript errors
 - [ ] Discord branding and styling display correctly
@@ -44,12 +49,14 @@ Use this checklist to verify that the Translation Hub is properly deployed and c
 ## ✅ Authentication Flow Testing
 
 ### Guest Access (Unauthenticated)
+
 - [ ] View page accessible without authentication
 - [ ] Edit, Verify, Management pages redirect to home when accessed directly
 - [ ] Sign-in button displays and is functional
 - [ ] Role badge shows "Guest" status
 
 ### Discord Authentication
+
 - [ ] "Sign in with Discord" redirects to Discord OAuth page
 - [ ] Discord authorization page requests guild permissions
 - [ ] User can authorize application
@@ -58,6 +65,7 @@ Use this checklist to verify that the Translation Hub is properly deployed and c
 - [ ] User redirected to main dashboard after authentication
 
 ### Role Assignment Verification
+
 - [ ] User profile displays correctly (avatar, username, email, Discord ID)
 - [ ] Role badge displays appropriate role:
   - [ ] "Guest" for non-guild members or recent members
@@ -67,6 +75,7 @@ Use this checklist to verify that the Translation Hub is properly deployed and c
 ## ✅ Role-Based Access Control Testing
 
 ### Contributor Testing (1+ Month Guild Member)
+
 - [ ] Navigation shows: Dashboard, View, Edit, Verify
 - [ ] Management page not accessible (redirects to home)
 - [ ] Edit page loads with translation editing interface
@@ -74,6 +83,7 @@ Use this checklist to verify that the Translation Hub is properly deployed and c
 - [ ] Can navigate between allowed pages without issues
 
 ### Admin Testing (User in ADMIN_USER_IDS)
+
 - [ ] Navigation shows: Dashboard, View, Edit, Verify, Management
 - [ ] All pages accessible without redirects
 - [ ] Management page loads with user management interface
@@ -84,6 +94,7 @@ Use this checklist to verify that the Translation Hub is properly deployed and c
 ## ✅ Functionality Testing
 
 ### View Page (Public Access)
+
 - [ ] Translation browser displays demo translations
 - [ ] Search functionality works
 - [ ] Filter by language/status works
@@ -91,6 +102,7 @@ Use this checklist to verify that the Translation Hub is properly deployed and c
 - [ ] Responsive design works on different screen sizes
 
 ### Edit Page (Contributors/Admins)
+
 - [ ] Translation selection interface works
 - [ ] Multi-language tabs display correctly
 - [ ] Text editing areas functional
@@ -98,6 +110,7 @@ Use this checklist to verify that the Translation Hub is properly deployed and c
 - [ ] Translation status updates appropriately
 
 ### Verify Page (Contributors/Admins)
+
 - [ ] Pending translations list displays
 - [ ] Translation review interface functional
 - [ ] Approve/reject workflow works
@@ -105,6 +118,7 @@ Use this checklist to verify that the Translation Hub is properly deployed and c
 - [ ] Verification history tracking works
 
 ### Management Page (Admins Only)
+
 - [ ] User list displays with proper information
 - [ ] User selection shows detailed information
 - [ ] Guild membership status displays correctly
@@ -114,18 +128,21 @@ Use this checklist to verify that the Translation Hub is properly deployed and c
 ## ✅ Technical Verification
 
 ### Security
+
 - [ ] No sensitive credentials exposed in client-side code
 - [ ] Environment variables properly injected during build only
 - [ ] GitHub Secrets not visible in repository or build logs
 - [ ] Authentication tokens handled securely
 
 ### Performance
+
 - [ ] Application loads quickly
 - [ ] Navigation between pages is smooth
 - [ ] No console errors in browser developer tools
 - [ ] Responsive design works on mobile devices
 
 ### Session Management
+
 - [ ] Authentication state persists across browser refresh
 - [ ] Role information maintained across sessions
 - [ ] Sign-out functionality clears authentication state
@@ -134,16 +151,19 @@ Use this checklist to verify that the Translation Hub is properly deployed and c
 ## 🔧 Troubleshooting Common Issues
 
 ### Authentication Issues
+
 - **Discord authorization fails**: Check redirect URI configuration
 - **Callback errors**: Verify Discord application permissions include guilds
 - **Role not assigned correctly**: Check guild ID and admin user ID configuration
 
 ### Access Control Issues
+
 - **Wrong role assigned**: Verify guild membership duration and admin configuration
 - **Page redirects unexpectedly**: Check user role and page access requirements
 - **Navigation not updating**: Clear browser cache and localStorage
 
 ### Deployment Issues
+
 - **Build fails**: Check GitHub Secrets configuration
 - **Environment variables not loaded**: Verify secret names match workflow file
 - **Site not accessible**: Check GitHub Pages configuration and DNS propagation
@@ -151,6 +171,7 @@ Use this checklist to verify that the Translation Hub is properly deployed and c
 ## 📊 Success Criteria
 
 ### Complete Deployment Success
+
 - [ ] All authentication flows work correctly
 - [ ] Role-based access control functions as designed
 - [ ] All pages load and function properly
@@ -160,6 +181,7 @@ Use this checklist to verify that the Translation Hub is properly deployed and c
 - [ ] Documentation matches actual implementation
 
 ### Ready for Production Use
+
 - [ ] Real Discord guild configured (not demo guild)
 - [ ] Actual admin users configured
 - [ ] Production domain configured (if using custom domain)

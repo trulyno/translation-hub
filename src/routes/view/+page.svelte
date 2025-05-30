@@ -62,15 +62,17 @@
 	});
 
 	function filterTranslations() {
-		filteredTranslations = translations.filter(translation => {
-			const matchesSearch = searchTerm === '' || 
+		filteredTranslations = translations.filter((translation) => {
+			const matchesSearch =
+				searchTerm === '' ||
 				translation.key.toLowerCase().includes(searchTerm.toLowerCase()) ||
 				translation.baseText.toLowerCase().includes(searchTerm.toLowerCase());
-			
-			const matchesCategory = selectedCategory === 'all' || translation.category === selectedCategory;
-			
-			const matchesLanguage = selectedLanguage === 'all' || 
-				Object.keys(translation.languages).includes(selectedLanguage);
+
+			const matchesCategory =
+				selectedCategory === 'all' || translation.category === selectedCategory;
+
+			const matchesLanguage =
+				selectedLanguage === 'all' || Object.keys(translation.languages).includes(selectedLanguage);
 
 			return matchesSearch && matchesCategory && matchesLanguage;
 		});
@@ -83,9 +85,12 @@
 
 	function getStatusColor(status) {
 		switch (status) {
-			case 'complete': return '#10b981';
-			case 'pending': return '#f59e0b';
-			default: return '#6b7280';
+			case 'complete':
+				return '#10b981';
+			case 'pending':
+				return '#f59e0b';
+			default:
+				return '#6b7280';
 		}
 	}
 </script>
@@ -104,10 +109,10 @@
 	<div class="filters">
 		<div class="filter-group">
 			<label for="search">Search:</label>
-			<input 
+			<input
 				id="search"
-				type="text" 
-				bind:value={searchTerm} 
+				type="text"
+				bind:value={searchTerm}
 				placeholder="Search by key or text..."
 			/>
 		</div>
@@ -134,7 +139,11 @@
 	</div>
 
 	<div class="results-info">
-		<p>Showing {filteredTranslations.length} translation{filteredTranslations.length === 1 ? '' : 's'}</p>
+		<p>
+			Showing {filteredTranslations.length} translation{filteredTranslations.length === 1
+				? ''
+				: 's'}
+		</p>
 	</div>
 
 	<div class="translations-grid">
@@ -144,9 +153,10 @@
 					<h3>{translation.key}</h3>
 					<span class="category-badge">{translation.category}</span>
 				</div>
-				
+
 				<div class="base-text">
-					<strong>Base:</strong> {translation.baseText}
+					<strong>Base:</strong>
+					{translation.baseText}
 				</div>
 
 				<div class="languages">
@@ -155,8 +165,8 @@
 							<div class="language-header">
 								<span class="language-code">{lang.toUpperCase()}</span>
 								<div class="status-indicators">
-									<span 
-										class="status-dot" 
+									<span
+										class="status-dot"
 										style="background-color: {getStatusColor(data.status)}"
 										title="Status: {data.status}"
 									></span>

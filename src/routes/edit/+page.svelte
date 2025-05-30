@@ -1,7 +1,7 @@
 <script>
 	import { user, isAuthenticated, userRole } from '$lib/stores.js';
 	import { onMount } from 'svelte';
-    import { base } from '$app/paths';
+	import { base } from '$app/paths';
 	import { goto } from '$app/navigation';
 
 	let translations = [];
@@ -58,10 +58,12 @@
 	});
 
 	function filterTranslations() {
-		filteredTranslations = translations.filter(translation => {
-			return searchTerm === '' || 
+		filteredTranslations = translations.filter((translation) => {
+			return (
+				searchTerm === '' ||
 				translation.key.toLowerCase().includes(searchTerm.toLowerCase()) ||
-				translation.baseText.toLowerCase().includes(searchTerm.toLowerCase());
+				translation.baseText.toLowerCase().includes(searchTerm.toLowerCase())
+			);
 		});
 	}
 
@@ -95,14 +97,14 @@
 		if (!selectedTranslation.languages[editingLanguage]) {
 			selectedTranslation.languages[editingLanguage] = {};
 		}
-		
+
 		selectedTranslation.languages[editingLanguage].text = editText;
 		selectedTranslation.languages[editingLanguage].status = 'complete';
 		selectedTranslation.languages[editingLanguage].verified = false;
 
 		// Trigger reactivity
 		translations = [...translations];
-		
+
 		showNotification('Translation saved successfully!');
 	}
 
@@ -122,7 +124,7 @@
 			box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 		`;
 		document.body.appendChild(notification);
-		
+
 		setTimeout(() => {
 			notification.remove();
 		}, 3000);
@@ -130,9 +132,12 @@
 
 	function getStatusColor(status) {
 		switch (status) {
-			case 'complete': return '#10b981';
-			case 'pending': return '#f59e0b';
-			default: return '#6b7280';
+			case 'complete':
+				return '#10b981';
+			case 'pending':
+				return '#f59e0b';
+			default:
+				return '#6b7280';
 		}
 	}
 </script>
@@ -152,16 +157,12 @@
 		<!-- Translation List -->
 		<div class="translation-list">
 			<div class="search-box">
-				<input 
-					type="text" 
-					bind:value={searchTerm} 
-					placeholder="Search translations..."
-				/>
+				<input type="text" bind:value={searchTerm} placeholder="Search translations..." />
 			</div>
 
 			<div class="translations">
 				{#each filteredTranslations as translation}
-					<div 
+					<div
 						class="translation-item {selectedTranslation === translation ? 'selected' : ''}"
 						on:click={() => selectTranslation(translation)}
 					>
@@ -170,8 +171,8 @@
 						<div class="translation-languages">
 							{#each languages as lang}
 								{#if translation.languages[lang]}
-									<span 
-										class="status-dot" 
+									<span
+										class="status-dot"
 										style="background-color: {getStatusColor(translation.languages[lang].status)}"
 										title="{lang.toUpperCase()}: {translation.languages[lang].status}"
 									></span>
@@ -194,7 +195,8 @@
 				</div>
 
 				<div class="base-text">
-					<strong>Base Text:</strong> {selectedTranslation.baseText}
+					<strong>Base Text:</strong>
+					{selectedTranslation.baseText}
 				</div>
 
 				<!-- Language Selector -->
@@ -202,7 +204,7 @@
 					<label>Editing Language:</label>
 					<div class="language-tabs">
 						{#each languages as lang}
-							<button 
+							<button
 								class="language-tab {editingLanguage === lang ? 'active' : ''}"
 								on:click={() => changeLanguage(lang)}
 							>
@@ -211,7 +213,12 @@
 									{#if selectedTranslation.languages[lang].verified}
 										<span class="verified">✓</span>
 									{:else}
-										<span class="status-indicator" style="background-color: {getStatusColor(selectedTranslation.languages[lang].status)}"></span>
+										<span
+											class="status-indicator"
+											style="background-color: {getStatusColor(
+												selectedTranslation.languages[lang].status
+											)}"
+										></span>
 									{/if}
 								{:else}
 									<span class="missing-indicator">○</span>
@@ -224,20 +231,16 @@
 				<!-- Editor -->
 				<div class="editor">
 					<label for="translation-text">Translation for {editingLanguage.toUpperCase()}:</label>
-					<textarea 
+					<textarea
 						id="translation-text"
 						bind:value={editText}
 						placeholder="Enter translation..."
 						rows="4"
 					></textarea>
-					
+
 					<div class="editor-actions">
-						<button class="btn btn-primary" on:click={saveTranslation}>
-							Save Translation
-						</button>
-						<button class="btn btn-secondary" on:click={() => editText = ''}>
-							Clear
-						</button>
+						<button class="btn btn-primary" on:click={saveTranslation}> Save Translation </button>
+						<button class="btn btn-secondary" on:click={() => (editText = '')}> Clear </button>
 					</div>
 				</div>
 
@@ -249,9 +252,7 @@
 							<div class="current-header">
 								<span class="current-lang">{lang.toUpperCase()}</span>
 								<div class="current-status">
-									<span 
-										class="status-dot" 
-										style="background-color: {getStatusColor(data.status)}"
+									<span class="status-dot" style="background-color: {getStatusColor(data.status)}"
 									></span>
 									{#if data.verified}
 										<span class="verified-icon">✓</span>

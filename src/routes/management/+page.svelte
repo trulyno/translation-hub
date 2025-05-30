@@ -1,7 +1,7 @@
 <script>
 	import { user, isAuthenticated, userRole, updateUserRole } from '$lib/stores.js';
 	import { onMount } from 'svelte';
-    import { base } from '$app/paths';
+	import { base } from '$app/paths';
 	import { goto } from '$app/navigation';
 
 	let users = [];
@@ -80,12 +80,13 @@
 	});
 
 	function filterUsers() {
-		filteredUsers = users.filter(user => {
-			const matchesSearch = searchTerm === '' || 
+		filteredUsers = users.filter((user) => {
+			const matchesSearch =
+				searchTerm === '' ||
 				user.username.toLowerCase().includes(searchTerm.toLowerCase()) ||
 				user.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
 				user.discordId.includes(searchTerm);
-			
+
 			const matchesRole = filterRole === 'all' || user.role === filterRole;
 
 			return matchesSearch && matchesRole;
@@ -102,14 +103,14 @@
 	}
 
 	function revokeContributorRole(userId) {
-		const user = users.find(u => u.id === userId);
+		const user = users.find((u) => u.id === userId);
 		if (user && user.role === 'contributor') {
 			user.role = 'guest';
 			user.verificationStatus = 'revoked';
-			
+
 			// Update the list
 			users = [...users];
-			
+
 			showNotification(`Contributor role revoked for ${user.username}`, 'warning');
 			showConfirmDialog = false;
 			selectedUser = null;
@@ -148,7 +149,7 @@
 			box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 		`;
 		document.body.appendChild(notification);
-		
+
 		setTimeout(() => {
 			notification.remove();
 		}, 3000);
@@ -156,19 +157,27 @@
 
 	function getRoleColor(role) {
 		switch (role) {
-			case 'admin': return '#f59e0b';
-			case 'contributor': return '#3b82f6';
-			case 'guest': return '#6b7280';
-			default: return '#6b7280';
+			case 'admin':
+				return '#f59e0b';
+			case 'contributor':
+				return '#3b82f6';
+			case 'guest':
+				return '#6b7280';
+			default:
+				return '#6b7280';
 		}
 	}
 
 	function getStatusColor(status) {
 		switch (status) {
-			case 'approved': return '#10b981';
-			case 'pending': return '#f59e0b';
-			case 'revoked': return '#ef4444';
-			default: return '#6b7280';
+			case 'approved':
+				return '#10b981';
+			case 'pending':
+				return '#f59e0b';
+			case 'revoked':
+				return '#ef4444';
+			default:
+				return '#6b7280';
 		}
 	}
 
@@ -219,9 +228,9 @@
 			</div>
 
 			<div class="filters">
-				<input 
-					type="text" 
-					bind:value={searchTerm} 
+				<input
+					type="text"
+					bind:value={searchTerm}
 					placeholder="Search users..."
 					class="search-input"
 				/>
@@ -236,7 +245,7 @@
 
 			<div class="users-list">
 				{#each filteredUsers as user}
-					<div 
+					<div
 						class="user-item {selectedUser === user ? 'selected' : ''}"
 						on:click={() => selectUser(user)}
 					>
@@ -246,14 +255,11 @@
 								<span class="user-id">#{user.discordId.slice(-6)}</span>
 							</div>
 							<div class="user-badges">
-								<span 
-									class="role-badge" 
-									style="background-color: {getRoleColor(user.role)}"
-								>
+								<span class="role-badge" style="background-color: {getRoleColor(user.role)}">
 									{user.role}
 								</span>
-								<span 
-									class="status-badge" 
+								<span
+									class="status-badge"
 									style="background-color: {getStatusColor(user.verificationStatus)}"
 								>
 									{user.verificationStatus}
@@ -293,7 +299,7 @@
 
 						{#if user.role === 'contributor'}
 							<div class="user-actions">
-								<button 
+								<button
 									class="btn btn-danger btn-small"
 									on:click|stopPropagation={() => showRevokeDialog(user)}
 								>
@@ -321,28 +327,30 @@
 						<h4>Basic Information</h4>
 						<div class="detail-grid">
 							<div class="detail-row">
-								<strong>Username:</strong> {selectedUser.username}
+								<strong>Username:</strong>
+								{selectedUser.username}
 							</div>
 							<div class="detail-row">
-								<strong>Discord ID:</strong> 
+								<strong>Discord ID:</strong>
 								<span class="monospace">{selectedUser.discordId}</span>
 							</div>
 							<div class="detail-row">
-								<strong>Email:</strong> {selectedUser.email}
+								<strong>Email:</strong>
+								{selectedUser.email}
 							</div>
 							<div class="detail-row">
-								<strong>Current Role:</strong> 
-								<span 
-									class="role-badge" 
+								<strong>Current Role:</strong>
+								<span
+									class="role-badge"
 									style="background-color: {getRoleColor(selectedUser.role)}"
 								>
 									{selectedUser.role}
 								</span>
 							</div>
 							<div class="detail-row">
-								<strong>Status:</strong> 
-								<span 
-									class="status-badge" 
+								<strong>Status:</strong>
+								<span
+									class="status-badge"
 									style="background-color: {getStatusColor(selectedUser.verificationStatus)}"
 								>
 									{selectedUser.verificationStatus}
@@ -355,16 +363,20 @@
 						<h4>Activity Information</h4>
 						<div class="detail-grid">
 							<div class="detail-row">
-								<strong>Joined Hub:</strong> {formatDate(selectedUser.joinDate)}
+								<strong>Joined Hub:</strong>
+								{formatDate(selectedUser.joinDate)}
 							</div>
 							<div class="detail-row">
-								<strong>Last Seen:</strong> {formatTimeAgo(selectedUser.lastSeen)}
+								<strong>Last Seen:</strong>
+								{formatTimeAgo(selectedUser.lastSeen)}
 							</div>
 							<div class="detail-row">
-								<strong>Guild Member Since:</strong> {formatDate(selectedUser.guildMemberSince)}
+								<strong>Guild Member Since:</strong>
+								{formatDate(selectedUser.guildMemberSince)}
 							</div>
 							<div class="detail-row">
-								<strong>Days in Guild:</strong> {getDaysInGuild(selectedUser.guildMemberSince)} days
+								<strong>Days in Guild:</strong>
+								{getDaysInGuild(selectedUser.guildMemberSince)} days
 							</div>
 						</div>
 					</div>
@@ -381,7 +393,13 @@
 								<div class="stat-title">Verifications Done</div>
 							</div>
 							<div class="stat-card">
-								<div class="stat-number">{Math.round((selectedUser.verificationsCount / Math.max(selectedUser.contributionsCount, 1)) * 100)}%</div>
+								<div class="stat-number">
+									{Math.round(
+										(selectedUser.verificationsCount /
+											Math.max(selectedUser.contributionsCount, 1)) *
+											100
+									)}%
+								</div>
 								<div class="stat-title">Verification Rate</div>
 							</div>
 						</div>
@@ -390,11 +408,11 @@
 					{#if selectedUser.role === 'contributor'}
 						<div class="detail-section">
 							<h4>Role Management</h4>
-							<p>This user has contributor access. You can revoke their contributor role to downgrade them to guest status.</p>
-							<button 
-								class="btn btn-danger"
-								on:click={() => showRevokeDialog(selectedUser)}
-							>
+							<p>
+								This user has contributor access. You can revoke their contributor role to downgrade
+								them to guest status.
+							</p>
+							<button class="btn btn-danger" on:click={() => showRevokeDialog(selectedUser)}>
 								Revoke Contributor Role
 							</button>
 						</div>
@@ -402,13 +420,15 @@
 						<div class="detail-section">
 							<h4>Role Information</h4>
 							<p>
-								This user is currently a guest. 
+								This user is currently a guest.
 								{#if getDaysInGuild(selectedUser.guildMemberSince) >= 30}
-									They have been in the Discord server for {getDaysInGuild(selectedUser.guildMemberSince)} days 
-									and are eligible for contributor status. Role will be automatically upgraded on next login.
+									They have been in the Discord server for {getDaysInGuild(
+										selectedUser.guildMemberSince
+									)} days and are eligible for contributor status. Role will be automatically upgraded
+									on next login.
 								{:else}
-									They need to be in the Discord server for at least 30 days to become a contributor. 
-									Currently: {getDaysInGuild(selectedUser.guildMemberSince)} days.
+									They need to be in the Discord server for at least 30 days to become a
+									contributor. Currently: {getDaysInGuild(selectedUser.guildMemberSince)} days.
 								{/if}
 							</p>
 						</div>
@@ -417,8 +437,11 @@
 			{:else}
 				<div class="no-selection">
 					<h3>Select a user to view details</h3>
-					<p>Choose a user from the list to view their detailed information and manage their permissions.</p>
-					
+					<p>
+						Choose a user from the list to view their detailed information and manage their
+						permissions.
+					</p>
+
 					<div class="management-info">
 						<h4>Management Actions:</h4>
 						<ul>
@@ -438,24 +461,19 @@
 			<div class="modal-content" on:click|stopPropagation>
 				<h3>Confirm Role Revocation</h3>
 				<p>
-					Are you sure you want to revoke contributor access for 
+					Are you sure you want to revoke contributor access for
 					<strong>{selectedUser.username}</strong>?
 				</p>
 				<p class="warning-text">
-					This will downgrade them to guest status and they will lose access to 
-					editing and verification features.
+					This will downgrade them to guest status and they will lose access to editing and
+					verification features.
 				</p>
-				
+
 				<div class="modal-actions">
-					<button 
-						class="btn btn-danger"
-						on:click={() => revokeContributorRole(selectedUser.id)}
-					>
+					<button class="btn btn-danger" on:click={() => revokeContributorRole(selectedUser.id)}>
 						Yes, Revoke Access
 					</button>
-					<button class="btn btn-secondary" on:click={cancelRevoke}>
-						Cancel
-					</button>
+					<button class="btn btn-secondary" on:click={cancelRevoke}> Cancel </button>
 				</div>
 			</div>
 		</div>

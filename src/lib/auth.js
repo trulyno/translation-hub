@@ -78,11 +78,14 @@ export async function getDiscordUser(accessToken) {
  */
 export async function checkGuildMembership(accessToken) {
 	try {
-		const response = await fetch(`https://discord.com/api/users/@me/guilds/${discordConfig.guildId}/member`, {
-			headers: {
-				Authorization: `Bearer ${accessToken}`
+		const response = await fetch(
+			`https://discord.com/api/users/@me/guilds/${discordConfig.guildId}/member`,
+			{
+				headers: {
+					Authorization: `Bearer ${accessToken}`
+				}
 			}
-		});
+		);
 
 		if (!response.ok) {
 			return null;
@@ -102,11 +105,11 @@ export async function checkGuildMembership(accessToken) {
  */
 export function hasBeenMemberLongEnough(joinedAt) {
 	if (!joinedAt) return false;
-	
+
 	const joinDate = new Date(joinedAt);
 	const oneMonthAgo = new Date();
 	oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
-	
+
 	return joinDate <= oneMonthAgo;
 }
 

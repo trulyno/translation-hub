@@ -18,11 +18,12 @@
 	 */
 	function hasAccess(requiredRole) {
 		const currentRole = $userRole;
-		
+
 		if (requiredRole === 'guest') return true;
-		if (requiredRole === 'contributor') return currentRole === 'contributor' || currentRole === 'admin';
+		if (requiredRole === 'contributor')
+			return currentRole === 'contributor' || currentRole === 'admin';
 		if (requiredRole === 'admin') return currentRole === 'admin';
-		
+
 		return false;
 	}
 </script>
@@ -48,7 +49,9 @@
 				<div class="user-info">
 					<h2>Welcome back, {$user.username}! 👋</h2>
 					<p class="user-email">{$user.email || 'No email provided'}</p>
-					<p class="user-role">Role: <span class="role-badge role-{$userRole}">{$userRole}</span></p>
+					<p class="user-role">
+						Role: <span class="role-badge role-{$userRole}">{$userRole}</span>
+					</p>
 				</div>
 			</div>
 
@@ -111,15 +114,17 @@
 	<div class="info-section">
 		<h3>About Translation Hub</h3>
 		<p>
-			A role-based translation management system with Discord OAuth2 integration. 
-			Your access level is determined by your Discord server membership duration.
+			A role-based translation management system with Discord OAuth2 integration. Your access level
+			is determined by your Discord server membership duration.
 		</p>
 
 		<div class="features">
 			<h4>Role System:</h4>
 			<ul>
 				<li>🎭 <strong>Guest:</strong> Can view translations (default for new users)</li>
-				<li>👤 <strong>Contributor:</strong> Discord members for 1+ months (can edit and verify)</li>
+				<li>
+					👤 <strong>Contributor:</strong> Discord members for 1+ months (can edit and verify)
+				</li>
 				<li>⚡ <strong>Admin:</strong> Server administrators (full access)</li>
 			</ul>
 		</div>

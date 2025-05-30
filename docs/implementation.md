@@ -31,6 +31,7 @@ The Discord OAuth2 authentication demo has been successfully implemented and is 
 ### Completed Features
 
 #### Core Authentication System
+
 - **Discord OAuth2 Integration**: Complete authorization code grant flow with guild membership verification
 - **Guild Membership Verification**: Checks if authenticated users have been guild members for 1+ months
 - **Role-Based Access Control**: Three-tier system (Guest, Contributor, Admin)
@@ -38,6 +39,7 @@ The Discord OAuth2 authentication demo has been successfully implemented and is 
 - **Session Management**: Persistent authentication state with localStorage
 
 #### Role-Based Demo Pages
+
 - **Central Dashboard** (`/`) - Main navigation hub with role-based menu and user profile
 - **View Page** (`/view`) - Public translation browser accessible to everyone
 - **Edit Page** (`/edit`) - Translation editing interface (contributors and admins only)
@@ -45,12 +47,14 @@ The Discord OAuth2 authentication demo has been successfully implemented and is 
 - **Management Page** (`/management`) - User management with role revocation (admins only)
 
 #### Access Control Features
+
 - **Automatic Role Assignment**: Based on guild membership duration and admin status
 - **Page Protection**: Automatic redirects for unauthorized access attempts
 - **UI Adaptation**: Role-based visibility of navigation elements and features
 - **User Information Display**: Avatar, username, email, and role badge
 
 #### Demo Functionality
+
 - **Translation Management**: Browse, search, filter, and edit translations
 - **Multi-language Support**: Language tabs and translation editing interface
 - **Verification Workflow**: Approve/reject pending translations with feedback
@@ -66,12 +70,14 @@ The application implements a client-side Discord OAuth2 flow specifically design
 #### Key Files and Components
 
 **Core Authentication:**
+
 - **`src/lib/auth.js`** - Discord OAuth2 configuration, guild membership verification, and role determination
 - **`src/lib/stores.js`** - Svelte stores for user state, authentication, and role management
 - **`src/routes/auth/callback/+page.svelte`** - OAuth callback handler with role assignment
 - **`src/lib/components/Navigation.svelte`** - Role-based navigation component
 
 **Application Pages:**
+
 - **`src/routes/+page.svelte`** - Central dashboard with role-based navigation menu
 - **`src/routes/view/+page.svelte`** - Translation browser (accessible to all users)
 - **`src/routes/edit/+page.svelte`** - Translation editing interface (contributors/admins)
@@ -79,6 +85,7 @@ The application implements a client-side Discord OAuth2 flow specifically design
 - **`src/routes/management/+page.svelte`** - User management system (admins only)
 
 **Configuration:**
+
 - **`.env`** - Environment variables including admin user IDs and Discord configuration
 - **`src/app.d.ts`** - TypeScript definitions (cleaned up)
 
@@ -201,18 +208,21 @@ const config = {
 The application implements a three-tier role system:
 
 #### 🔒 Guest Role
+
 - **Access**: View page only
 - **Requirements**: No authentication required
 - **Permissions**: Browse and view translations, no editing capabilities
 - **UI Elements**: Limited navigation menu, sign-in prompt
 
-#### 👥 Contributor Role  
+#### 👥 Contributor Role
+
 - **Access**: View, Edit, and Verify pages
 - **Requirements**: Discord authentication + 1+ month guild membership
 - **Permissions**: View, edit, and verify translations
 - **UI Elements**: Full navigation except management features
 
 #### 👑 Admin Role
+
 - **Access**: All pages including Management
 - **Requirements**: Discord user ID listed in `VITE_ADMIN_USER_IDS` environment variable
 - **Permissions**: All contributor permissions + user management and role revocation
@@ -297,16 +307,19 @@ For a full production deployment, consider adding:
 ### Role-Specific Interfaces
 
 #### Guest Interface
+
 - **Simple Navigation**: View page access only
 - **Sign-in Prompts**: Clear call-to-action for authentication
 - **Public Content**: Translation browser without editing capabilities
 
-#### Contributor Interface  
+#### Contributor Interface
+
 - **Extended Navigation**: Access to View, Edit, and Verify pages
 - **Editing Tools**: Translation editing interface with language tabs
 - **Verification Workflow**: Approve/reject pending translations
 
 #### Admin Interface
+
 - **Full Navigation**: Access to all pages including Management
 - **User Management**: View user details, guild membership status
 - **Role Controls**: Revoke contributor roles and manage user access
@@ -402,12 +415,14 @@ For a full production deployment, consider adding:
 ### Testing Checklist
 
 #### ✅ Completed
+
 - Build process verification
 - Role-based page access control
 - Environment configuration
 - UI/UX implementation
 
 #### 🔄 Ready for Testing
+
 - Discord OAuth flow with real credentials
 - Guild membership verification with actual guild
 - Admin role assignment and management features

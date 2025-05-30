@@ -26,11 +26,11 @@ if (browser) {
 			const userData = JSON.parse(storedUser);
 			user.set(userData);
 			isAuthenticated.set(true);
-			
+
 			if (storedRole) {
 				userRole.set(storedRole);
 			}
-			
+
 			if (storedGuildMember) {
 				guildMember.set(JSON.parse(storedGuildMember));
 			}

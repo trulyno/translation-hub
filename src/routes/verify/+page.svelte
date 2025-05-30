@@ -1,7 +1,7 @@
 <script>
 	import { user, isAuthenticated, userRole } from '$lib/stores.js';
 	import { onMount } from 'svelte';
-    import { base } from '$app/paths';
+	import { base } from '$app/paths';
 	import { goto } from '$app/navigation';
 
 	let pendingTranslations = [];
@@ -73,12 +73,13 @@
 	});
 
 	function filterTranslations() {
-		filteredTranslations = pendingTranslations.filter(translation => {
-			const matchesSearch = searchTerm === '' || 
+		filteredTranslations = pendingTranslations.filter((translation) => {
+			const matchesSearch =
+				searchTerm === '' ||
 				translation.key.toLowerCase().includes(searchTerm.toLowerCase()) ||
 				translation.baseText.toLowerCase().includes(searchTerm.toLowerCase()) ||
 				translation.translation.toLowerCase().includes(searchTerm.toLowerCase());
-			
+
 			const matchesStatus = filterStatus === 'all' || translation.status === filterStatus;
 
 			return matchesSearch && matchesStatus;
@@ -106,7 +107,7 @@
 
 		// Update the list
 		pendingTranslations = [...pendingTranslations];
-		
+
 		showNotification('Translation approved!', 'success');
 		clearSelection();
 	}
@@ -124,7 +125,7 @@
 
 		// Update the list
 		pendingTranslations = [...pendingTranslations];
-		
+
 		showNotification('Translation rejected with feedback.', 'warning');
 		clearSelection();
 	}
@@ -157,7 +158,7 @@
 			box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 		`;
 		document.body.appendChild(notification);
-		
+
 		setTimeout(() => {
 			notification.remove();
 		}, 3000);
@@ -165,11 +166,16 @@
 
 	function getStatusColor(status) {
 		switch (status) {
-			case 'pending': return '#f59e0b';
-			case 'approved': return '#10b981';
-			case 'rejected': return '#ef4444';
-			case 'reviewed': return '#3b82f6';
-			default: return '#6b7280';
+			case 'pending':
+				return '#f59e0b';
+			case 'approved':
+				return '#10b981';
+			case 'rejected':
+				return '#ef4444';
+			case 'reviewed':
+				return '#3b82f6';
+			default:
+				return '#6b7280';
 		}
 	}
 
@@ -202,9 +208,9 @@
 		<!-- Translation List -->
 		<div class="translation-list">
 			<div class="filters">
-				<input 
-					type="text" 
-					bind:value={searchTerm} 
+				<input
+					type="text"
+					bind:value={searchTerm}
 					placeholder="Search translations..."
 					class="search-input"
 				/>
@@ -219,30 +225,30 @@
 
 			<div class="translations">
 				{#each filteredTranslations as translation}
-					<div 
+					<div
 						class="translation-item {selectedTranslation === translation ? 'selected' : ''}"
 						on:click={() => selectTranslation(translation)}
 					>
 						<div class="translation-header">
 							<div class="translation-key">{translation.key}</div>
-							<span 
-								class="status-badge" 
+							<span
+								class="status-badge"
 								style="background-color: {getStatusColor(translation.status)}"
 							>
 								{translation.status}
 							</span>
 						</div>
-						
+
 						<div class="translation-info">
 							<div class="language-badge">{translation.language.toUpperCase()}</div>
 							<div class="category-badge">{translation.category}</div>
 						</div>
-						
+
 						<div class="translation-preview">
 							<div class="base-text">{translation.baseText}</div>
 							<div class="translated-text">→ {translation.translation}</div>
 						</div>
-						
+
 						<div class="submission-info">
 							<span class="contributor">by {translation.contributor}</span>
 							<span class="timestamp">{formatTimeAgo(translation.submittedAt)}</span>
@@ -257,8 +263,8 @@
 			{#if selectedTranslation}
 				<div class="verification-header">
 					<h3>Reviewing Translation</h3>
-					<span 
-						class="current-status" 
+					<span
+						class="current-status"
 						style="background-color: {getStatusColor(selectedTranslation.status)}"
 					>
 						{selectedTranslation.status}
@@ -267,20 +273,24 @@
 
 				<div class="translation-details">
 					<div class="detail-row">
-						<strong>Key:</strong> 
+						<strong>Key:</strong>
 						<span class="monospace">{selectedTranslation.key}</span>
 					</div>
 					<div class="detail-row">
-						<strong>Category:</strong> {selectedTranslation.category}
+						<strong>Category:</strong>
+						{selectedTranslation.category}
 					</div>
 					<div class="detail-row">
-						<strong>Language:</strong> {selectedTranslation.language.toUpperCase()}
+						<strong>Language:</strong>
+						{selectedTranslation.language.toUpperCase()}
 					</div>
 					<div class="detail-row">
-						<strong>Contributor:</strong> {selectedTranslation.contributor}
+						<strong>Contributor:</strong>
+						{selectedTranslation.contributor}
 					</div>
 					<div class="detail-row">
-						<strong>Submitted:</strong> {formatTimeAgo(selectedTranslation.submittedAt)}
+						<strong>Submitted:</strong>
+						{formatTimeAgo(selectedTranslation.submittedAt)}
 					</div>
 				</div>
 
@@ -289,7 +299,7 @@
 						<label>Original Text:</label>
 						<div class="text-display original">{selectedTranslation.baseText}</div>
 					</div>
-					
+
 					<div class="text-section">
 						<label>Proposed Translation:</label>
 						<div class="text-display translation">{selectedTranslation.translation}</div>
@@ -298,7 +308,7 @@
 
 				<div class="feedback-section">
 					<label for="feedback">Verification Feedback:</label>
-					<textarea 
+					<textarea
 						id="feedback"
 						bind:value={verificationFeedback}
 						placeholder="Enter feedback for the contributor..."
@@ -314,9 +324,7 @@
 						<button class="btn btn-danger" on:click={rejectTranslation}>
 							❌ Reject Translation
 						</button>
-						<button class="btn btn-secondary" on:click={clearSelection}>
-							Cancel
-						</button>
+						<button class="btn btn-secondary" on:click={clearSelection}> Cancel </button>
 					</div>
 				{:else}
 					<div class="verification-result">

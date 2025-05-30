@@ -374,8 +374,9 @@ The application implements three access levels:
 - **Admin Role**: Users listed in `ADMIN_USER_IDS` (full management access)
 
 Required GitHub Secrets for production:
+
 - `DISCORD_CLIENT_ID`: Discord Application ID
-- `DISCORD_CLIENT_SECRET`: Discord Application Secret  
+- `DISCORD_CLIENT_SECRET`: Discord Application Secret
 - `DISCORD_GUILD_ID`: Your Discord Server ID for membership verification
 - `ADMIN_USER_IDS`: Comma-separated Discord User IDs for administrators
 
